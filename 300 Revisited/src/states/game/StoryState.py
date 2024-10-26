@@ -1,18 +1,32 @@
-from src.states.BaseState import BaseState
+from src.states.BaseState import BaseState 
 import pygame, sys
+from moviepy.editor import VideoFileClip
 
 from src.constants import *
 from src.recourses import *
 
 class StoryState(BaseState):
     def __init__(self):
-        #self.bg_image = pygame.image.load("./graphics/background.png")
-        #self.bg_image = pygame.transform.scale(
-            #self.bg_image, (WIDTH + 5, HEIGHT + 5))
-        pass
+        # ตั้งค่าตัวแปรพื้นฐาน
+        self.start_time = pygame.time.get_ticks()  # เริ่มนับเวลาจากการเปิดหน้านี้
+        self.current_text_index = 0  # ตำแหน่งของข้อความที่จะแสดงในปัจจุบัน
+
+        # ข้อความที่จะใช้แสดงผลตามลำดับ
+        self.texts = [
+            "400 BC",
+            "King Leonidas and his 300 Spartans rose to fight against the vast Persian army, led by King Xerxes I.",
+            "They fought to defend the land of Greece at the narrow pass of Thermopylae.",
+            "Xerxes and the Persian army... prepare yourselves!",
+            "We will bring them back, let King Leonidas rise again, and this time, victory will be ours!",
+            "Though that battle ended in the defeat of Leonidas, today, history will be",
+            "rewritten"
+        ]
+
+        # โหลดฟอนต์ CooperMdBT-Regular จากโฟลเดอร์ font
+        font_path = './fonts/CooperMdBT-Regular.ttf'
+        self.font = pygame.font.Font(font_path, 48)  # ตั้งค่าฟอนต์
 
     def Enter(self, params):
-        # print(self.bg_image)
         pass
 
     def update(self, dt, events):
@@ -24,29 +38,46 @@ class StoryState(BaseState):
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-                # if event.key == pygame.K_RETURN:
-                #     g_state_manager.Change('play')
+
+        # ตรวจสอบเวลาที่ผ่านไปนับตั้งแต่เริ่มต้นแสดงข้อความ
+        current_time = pygame.time.get_ticks()
+        # หากเป็นข้อความแรก ("400 BC") ให้แสดงนานขึ้น (5 วินาที)
+        display_duration = 15000 if self.current_text_index == 0 else 3000
+
+        if current_time - self.start_time >= display_duration:
+            if self.current_text_index < len(self.texts) - 1:
+                self.current_text_index += 1
+                self.start_time = current_time  # รีเซ็ตเวลาเมื่อเปลี่ยนข้อความ
+
+    def render_text_wrapped(self, text, screen):
+        # แบ่งข้อความตามความกว้างหน้าจอ
+        words = text.split()
+        lines = []
+        current_line = ""
+
+        for word in words:
+            # ตรวจสอบความกว้างของข้อความในบรรทัด
+            test_line = f"{current_line} {word}".strip()
+            text_surface = self.font.render(test_line, True, (255, 255, 255))
+            if text_surface.get_width() > WIDTH - 40:  # 40 เป็นระยะขอบซ้ายและขวา
+                lines.append(current_line)
+                current_line = word
+            else:
+                current_line = test_line
+        lines.append(current_line)  # เพิ่มบรรทัดสุดท้าย
+
+        # แสดงแต่ละบรรทัดที่หน้าจอ
+        y = HEIGHT / 2 - len(lines) * 25  # ตำแหน่ง Y เริ่มต้น
+        for line in lines:
+            line_surface = self.font.render(line, True, (255, 255, 255))
+            rect = line_surface.get_rect(center=(WIDTH / 2, y))
+            screen.blit(line_surface, rect)
+            y += 50  # เพิ่มระยะห่างระหว่างบรรทัด
 
     def render(self, screen):
-        # screen.blit(self.bg_image, (0, 0))
-
-        # t_title = gFonts['zelda'].render("Legend of 50", False, (34, 34, 34))
-        # rect = t_title.get_rect(center=(WIDTH / 2 + 6, HEIGHT / 2 - 90))
-        # screen.blit(t_title, rect)
-        fontTHM = pygame.font.Font(None, 36)
-        text1 = "THIS IS PAGE 2 I HERE"
-        t_title = gFonts['title'].render(text1, False, (255, 165, 0))
-        rect = t_title.get_rect(center=(WIDTH / 2 + 6, HEIGHT / 2 - 90))
-        screen.blit(t_title, rect)
-        # t_title = gFonts['zelda'].render("Legend of 50", False, (175, 53, 42))
-        # rect = t_title.get_rect(center=(WIDTH / 2 , HEIGHT / 2 - 96))
-        # screen.blit(t_title, rect)
-
-        # t_press_enter = gFonts['zelda_small'].render("Press Enter", False, (255, 255, 255))
-        # rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 +192))
-        # screen.blit(t_press_enter, rect)
-        # print("This is Page 1 I SUS")
+        # แสดงข้อความตามลำดับในตำแหน่งกลางจอ
+        text = self.texts[self.current_text_index]
+        self.render_text_wrapped(text, screen)
 
     def Exit(self):
         pass
-

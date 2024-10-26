@@ -7,7 +7,8 @@ g_state_manager = StateMachine()
 
 gFonts = {
     'title': pygame.font.Font('fonts/title.ttf',60),
-    'Press_Enter': pygame.font.Font('fonts/title.ttf',100)
+    'Press_Enter': pygame.font.Font('fonts/title.ttf',100),
+    'Story': pygame.font.Font('fonts/title.ttf',48)
 }
 '''
 gFonts = {
