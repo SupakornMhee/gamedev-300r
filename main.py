@@ -1,4 +1,3 @@
-<<<<<<< HEAD:300 Revisited/main.py
 import pygame, math, random, sys, os
 from src.constants import *
 
@@ -61,7 +60,7 @@ if __name__ == '__main__':
 
 
 
-=======
+
 import pygame, math, random, sys, os
 from src.constants import *
 
@@ -123,4 +122,4 @@ if __name__ == '__main__':
 
 
 
->>>>>>> 5042b1fda64259c0e625bebae720ffcf23e32301:main.py
+
