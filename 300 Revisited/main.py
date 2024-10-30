@@ -25,7 +25,8 @@ class GameMain:
             # 'play': PlayState(),
             # 'game_over': GameOverState(),
             'start' : StartState(),
-            'story_1' : StoryState()
+            'story_1' : StoryState(),
+            'lastvictory' : LastVictoryState()
         }
 
         g_state_manager.SetStates(states)
