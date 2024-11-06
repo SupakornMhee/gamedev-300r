@@ -1,3 +1,8 @@
+'''
+code นี้เป็นการทดสอบ play state เท่านั้น 
+เปิดเกมมา จะไปโผล่ที่ game state เลย
+'''
+
 import pygame, math, random, sys, os
 from src.constants import *
 
@@ -37,8 +42,8 @@ class GameMain:
         # gSounds['music'].play(-1)
         clock = pygame.time.Clock()
 
-        g_state_manager.Change("start")
-
+        #g_state_manager.Change("start")
+        # เข้า play state เลย
         while True:
             pygame.display.set_caption("Zelda game running with {:d} FPS".format(int(clock.get_fps())))
             dt = clock.tick(self.max_frame_rate) / 1000.0
