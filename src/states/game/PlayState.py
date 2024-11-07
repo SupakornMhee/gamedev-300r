@@ -69,9 +69,11 @@ class PlayState(BaseState):
                     if event.key == pygame.K_RETURN:  # กด enter
                         if self.paused_option == 0:
                             self.paused = False
+                            # เล่นต่อ
                         if self.paused_option == 1:
+                            self.paused = False
                             # เริ่มใหม่ตั้งแต่ด่านแรก
-                            pass
+                            
                         if self.paused_option == 2:
                             g_state_manager.Change("start")
                             # pygame.quit()
@@ -113,11 +115,6 @@ class PlayState(BaseState):
         # self.room.render(screen)
         if self.paused:
             # ถมจอดำ ทำหน้า pause พร้อมสามออปชั่น
-            '''
-            t_pause = gFonts['large'].render("PAUSED", False, (255, 255, 255))
-            rect = t_pause.get_rect(center = (WIDTH/2, HEIGHT/2))
-            screen.blit(t_pause, rect)
-            '''
             screen.fill((0, 0, 0))
             t_paused_option = ["Resume", "Retry", "Quit"]
             t_paused_color = [(255, 255, 255)]*3; t_paused_color[self.paused_option] = (255, 165, 0)
@@ -126,7 +123,7 @@ class PlayState(BaseState):
                 t_paused_option_font[i] = gFonts["Pause"].render(t_paused_option[i], False, t_paused_color[i])
             t_rect = [None]*3
             for i in range(3) :
-                t_rect[i] = t_paused_option_font[i].get_rect(center=(WIDTH//2, HEIGHT//2+48*i))
+                t_rect[i] = t_paused_option_font[i].get_rect(center=(WIDTH//2, HEIGHT//2+72*(i-1)))
                 screen.blit(t_paused_option_font[i],t_rect[i])
             pass
 
