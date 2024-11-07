@@ -250,7 +250,7 @@ class StartState(BaseState):
         title_text = "300"
         t_title_outline = gFonts['title'].render(title_text, False, (0, 0, 0))
         t_title = gFonts['title'].render(title_text, False, (255, 165, 0))
-        title_rect = t_title.get_rect(center=(self.title_pos_x + shake_offset_x, HEIGHT / 2 - 150 + shake_offset_y))
+        title_rect = t_title.get_rect(center=(self.title_pos_x + shake_offset_x, HEIGHT // 2 - 150 + shake_offset_y))
 
         # Draw title outline
         for offset in [(-2, -2), (2, -2), (-2, 2), (2, 2)]:
@@ -261,7 +261,7 @@ class StartState(BaseState):
         subtitle_text = "Rewritten"
         t_subtitle_outline = gFonts['title'].render(subtitle_text, False, (0, 0, 0))
         t_subtitle = gFonts['title'].render(subtitle_text, False, (255, 165, 0))
-        subtitle_rect = t_subtitle.get_rect(center=(self.subtitle_pos_x + shake_offset_x, HEIGHT / 2 - 90 + shake_offset_y))
+        subtitle_rect = t_subtitle.get_rect(center=(self.subtitle_pos_x + shake_offset_x, HEIGHT // 2 - 90 + shake_offset_y))
 
         # Draw subtitle outline
         for offset in [(-2, -2), (2, -2), (-2, 2), (2, 2)]:

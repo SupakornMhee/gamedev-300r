@@ -21,7 +21,9 @@ class PlayState(BaseState):
         pass
 
     def Enter(self, params):
-        self.paused = False
+        self.paused = True
+        self.paused_option = 0
+        return 
         entity_conf = ENTITY_DEFS["player"]
         self.player = Player(entity_conf)
         self.world = World(self.player)
@@ -50,29 +52,31 @@ class PlayState(BaseState):
                 # กด p เพื่อ pause/resume
                 if event.key == pygame.K_p:
                     self.paused = True
+                    self.paused_option = 0  # default option
 
         # ถ้า paused -- โดน return ตัดจบ
         if self.paused:
+
             # ทำสามอัน: resume / retry (เริ่มด่าน 1 ใหม่) / quit
             # 0 = resume / 1 = retry / 2 = quit
-            pause_option = 0  # default option
+            
             for event in events:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_w:  # go up
-                        pause_option = [2, 0, 1][pause_option]
+                        self.paused_option = [2, 0, 1][self.paused_option]
                     if event.key == pygame.K_s:  # go down
-                        pause_option = [1, 2, 0][pause_option]
+                        self.paused_option = [1, 2, 0][self.paused_option]
                     if event.key == pygame.K_RETURN:  # กด enter
-                        if pause_option == 0:
+                        if self.paused_option == 0:
                             self.paused = False
-                        if pause_option == 1:
+                        if self.paused_option == 1:
                             # เริ่มใหม่ตั้งแต่ด่านแรก
                             pass
-                        if pause_option == 2:
-                            pygame.quit()
-                            sys.exit()
-
-            return
+                        if self.paused_option == 2:
+                            g_state_manager.Change("start")
+                            # pygame.quit()
+                            # sys.exit()
+            return None
 
         self.World.update(dt, events)
 
@@ -82,9 +86,9 @@ class PlayState(BaseState):
         # temp
         # self.room.update(dt, events)
 
-    def render(self, screen):
-        # dungen render
-        self.World.render(screen)
+    def render(self, screen: pygame.Surface):
+        # World Render
+        # self.World.render(screen)
 
         # ใส่ stats ต่างๆ ภายในเกม ตรงด้านบนจอ
         # Ex. Health, Enemy Remaining, etc.
@@ -109,11 +113,21 @@ class PlayState(BaseState):
         # self.room.render(screen)
         if self.paused:
             # ถมจอดำ ทำหน้า pause พร้อมสามออปชั่น
-            """
+            '''
             t_pause = gFonts['large'].render("PAUSED", False, (255, 255, 255))
             rect = t_pause.get_rect(center = (WIDTH/2, HEIGHT/2))
             screen.blit(t_pause, rect)
-            """
+            '''
+            screen.fill((0, 0, 0))
+            t_paused_option = ["Resume", "Retry", "Quit"]
+            t_paused_color = [(255, 255, 255)]*3; t_paused_color[self.paused_option] = (255, 165, 0)
+            t_paused_option_font = [None]*3
+            for i in range(3) :
+                t_paused_option_font[i] = gFonts["Pause"].render(t_paused_option[i], False, t_paused_color[i])
+            t_rect = [None]*3
+            for i in range(3) :
+                t_rect[i] = t_paused_option_font[i].get_rect(center=(WIDTH//2, HEIGHT//2+48*i))
+                screen.blit(t_paused_option_font[i],t_rect[i])
             pass
 
     def Exit(self):

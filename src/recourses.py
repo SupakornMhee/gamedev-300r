@@ -10,7 +10,8 @@ sprite_collection = SpriteManager().spriteCollection
 gFonts = {
     'title': pygame.font.Font('fonts/title.ttf',60),
     'Press_Enter': pygame.font.Font('fonts/title.ttf',100),
-    'Story': pygame.font.Font('fonts/title.ttf',48)
+    'Story': pygame.font.Font('fonts/CooperMdBT-Regular.ttf',48),
+    'Pause': pygame.font.Font('fonts/title.ttf',48)
 }
 '''
 gFonts = {
