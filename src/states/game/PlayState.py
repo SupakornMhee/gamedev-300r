@@ -23,7 +23,12 @@ class PlayState(BaseState):
     def Enter(self, params):
         self.paused = True
         self.paused_option = 0
-        return 
+        
+        self.level = params['level']
+        # ทำหน้าเข้าเกม
+        
+        
+        '''
         entity_conf = ENTITY_DEFS["player"]
         self.player = Player(entity_conf)
         self.world = World(self.player)
@@ -39,6 +44,7 @@ class PlayState(BaseState):
         )
 
         self.player.ChangeState("walk")
+        '''
 
     def update(self, dt, events):
         for event in events:

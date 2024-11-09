@@ -43,9 +43,9 @@ class GameMain:
         # gSounds['music'].play(-1)
         clock = pygame.time.Clock()
 
-        #g_state_manager.Change("start")
+        g_state_manager.Change("start")
         # เข้า play state เลย
-        g_state_manager.Change("play")
+        #g_state_manager.Change("play")
         
         
         while True:

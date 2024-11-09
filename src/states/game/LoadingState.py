@@ -3,13 +3,15 @@ import pygame, sys
 from src.recourses import *
 from src.constants import *
 
-class GameOverState(BaseState):
+class LoadingState(BaseState):
     def __init__(self):
         pass
 
-    def Exit(self):
-        pass
+    
     def Enter(self, params):
+        pass
+    
+    def Exit(self, params) :
         pass
 
     def update(self, dt, events):
@@ -30,6 +32,10 @@ class GameOverState(BaseState):
         rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 144))
         screen.blit(t_title, rect)
 
-        t_press_enter = gFonts['zelda_small'].render("Press Enter", False, (175, 53, 42))
-        rect = t_press_enter.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 48))
-        screen.blit(t_press_enter, rect)
+        t_wave = gFonts['zelda_small'].render("WAVE ", False, (175, 53, 42))
+        rect = t_wave.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 48))
+        screen.blit(t_wave, rect)
+        
+        t_help = gFonts['zelda_small'].render("Press Enter", False, (175, 53, 42))
+        rect = t_help.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 48))
+        screen.blit(t_help, rect)

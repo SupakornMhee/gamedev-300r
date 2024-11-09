@@ -14,14 +14,23 @@ World.py ต้องมี Attribute อะไรบ้าง
 World.py ต้องมี Function อะไรบ้าง
 
 '''
-
+import random
+from src.entity_defs import *
+from src.constants import *
+from src.Dependencies import *
+from src.EntityBase import EntityBase
+from src.entity_defs import EntityConf
+from src.player import *
+import pygame
 
 class World:
-    def __init__(self):
-        pass
+    def __init__(self, level, player: Player):
+        self.width = WIDTH
+        self.height = HEIGHT
 
     def update(self, dt, events):
         pass
 
-    def render(self):
+    def render(self, screen):
+        screen.blit(self.bg_image, (shake_offset_x, shake_offset_y))
         pass
