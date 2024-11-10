@@ -24,7 +24,7 @@ class PlayState(BaseState):
         self.paused = True
         self.paused_option = 0
         
-        self.level = params['level']
+        # self.level = params['level']
         # ทำหน้าเข้าเกม
         
         
@@ -86,14 +86,25 @@ class PlayState(BaseState):
                             # sys.exit()
             return None
 
-        self.World.update(dt, events)
+        #self.World.update(dt, events)
 
-        if self.player.health == 0:
-            g_state_manager.Change("game_over")
+        # if self.player.health == 0:
+        #     g_state_manager.Change("game_over")
 
         # temp
         # self.room.update(dt, events)
-
+    def renderPausePage(self, screen: pygame.Surface) :
+        screen.fill((0, 0, 0))
+        t_paused_option = ["Resume", "Retry", "Quit"]
+        t_paused_color = [(255, 255, 255)]*3; t_paused_color[self.paused_option] = (255, 165, 0)
+        t_paused_option_font = [None]*3
+        for i in range(3) :
+            t_paused_option_font[i] = gFonts["Pause"].render(t_paused_option[i], False, t_paused_color[i])
+        t_rect = [None]*3
+        for i in range(3) :
+            t_rect[i] = t_paused_option_font[i].get_rect(center=(WIDTH//2, HEIGHT//2+72*(i-1)))
+            screen.blit(t_paused_option_font[i],t_rect[i])
+    
     def render(self, screen: pygame.Surface):
         # World Render
         # self.World.render(screen)
@@ -119,19 +130,8 @@ class PlayState(BaseState):
 
         # temp
         # self.room.render(screen)
-        if self.paused:
-            # ถมจอดำ ทำหน้า pause พร้อมสามออปชั่น
-            screen.fill((0, 0, 0))
-            t_paused_option = ["Resume", "Retry", "Quit"]
-            t_paused_color = [(255, 255, 255)]*3; t_paused_color[self.paused_option] = (255, 165, 0)
-            t_paused_option_font = [None]*3
-            for i in range(3) :
-                t_paused_option_font[i] = gFonts["Pause"].render(t_paused_option[i], False, t_paused_color[i])
-            t_rect = [None]*3
-            for i in range(3) :
-                t_rect[i] = t_paused_option_font[i].get_rect(center=(WIDTH//2, HEIGHT//2+72*(i-1)))
-                screen.blit(t_paused_option_font[i],t_rect[i])
-            pass
+        if self.paused: self.renderPausePage(screen)
+            
 
     def Exit(self):
         pass
