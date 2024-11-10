@@ -7,12 +7,16 @@ from src.recourses import *
 
 class StoryState(BaseState):
     def __init__(self):
-        # Basic setup
+        # Basic setup and initializations
         pygame.mixer.init()
         pygame.mixer.music.load('./sounds/backgroundstory1.mp3')
         pygame.mixer.music.set_volume(0.5)
         self.start_time = None  # Set in Enter method
         self.current_text_index = 0
+        self.show_instructions = False  # Flag to toggle instruction page
+        self.instruction_start_time = None  # Track when instructions are shown
+
+        # Story texts and backgrounds
         self.texts = [
             "400 BC",
             "King Leonidas and his 300 Spartans rose to fight against the 100,000 Persian soldiers, led by King Xerxes I.",
@@ -23,17 +27,26 @@ class StoryState(BaseState):
             "Though that battle ended in the defeat of Leonidas, today, history will be",
             "rewritten"
         ]
-
-        # Font and background setup
-        font_path = './fonts/CooperMdBT-Regular.ttf'
-        self.font = pygame.font.Font(font_path, 48)
-        self.small_font = pygame.font.Font(font_path, 24)
         self.backgrounds = [
             pygame.image.load('./graphics/400n.png'),
             pygame.image.load('./graphics/leonidas_vs_xerxes.jpg'),
             pygame.image.load('./graphics/Fought.jpg'),
             pygame.image.load('./graphics/Loss.jfif')
         ]
+
+        # Instructions content
+        self.instructions = [
+            "The Tome of Victory",
+            "WASD : Move Leonidas",
+            "TAB : Inventory",
+            "ESC : Pause"
+        ]
+        
+        # Font and background setup
+        font_path = './fonts/CooperMdBT-Regular.ttf'  # Change to a more war-like font if desired
+        self.font = pygame.font.Font(font_path, 48)
+        self.small_font = pygame.font.Font(font_path, 24)
+        self.instruction_font = pygame.font.Font(font_path, 40)  # Slightly smaller font for instructions
 
         # Sepia overlay for vintage effect
         self.sepia_overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
@@ -46,11 +59,20 @@ class StoryState(BaseState):
         self.skip_duration = 3000  # 3 seconds hold duration to skip
 
     def Enter(self, params):
-        pygame.mixer.music.play(-1)
-        # Set start time to initial delay from StartState
+        pygame.mixer.music.play()
         self.start_time = params.get('initial_delay', pygame.time.get_ticks())
 
     def update(self, dt, events):
+        if self.show_instructions:
+            if self.instruction_start_time is None:
+                self.instruction_start_time = pygame.time.get_ticks()  # Start time when instructions are shown
+
+            # Check if 5 seconds have passed
+            if pygame.time.get_ticks() - self.instruction_start_time >= 5000:
+                # After 5 seconds, change to the next state (e.g., 'main_menu' or game start)
+                g_state_manager.Change('load')  # You can replace this with the state you want
+            return
+
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -65,10 +87,7 @@ class StoryState(BaseState):
             if self.skip_start_time is None:
                 self.skip_start_time = pygame.time.get_ticks()
             elif pygame.time.get_ticks() - self.skip_start_time >= self.skip_duration:
-                # Skip to LastVictoryState after 3 seconds hold
-                g_state_manager.Change('lastvictory', {'initial_delay': pygame.time.get_ticks()})
-                # Skip to "rewritten" :
-                
+                self.show_instructions = True
         else:
             self.skip_start_time = None  # Reset if Enter is released
 
@@ -89,8 +108,48 @@ class StoryState(BaseState):
                 self.current_text_index += 1
                 self.start_time = current_time  # Reset start time
                 self.text_opacity = 0
+            else:
+                self.show_instructions = True
+
+    def render(self, screen):
+        if self.show_instructions:
+            self.render_instructions(screen)
+        else:
+            # Display background and overlays for story
+            if self.current_text_index < len(self.backgrounds):
+                background_image = self.backgrounds[self.current_text_index]
+                background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
+                screen.blit(background_image, (0, 0))
+            screen.blit(self.sepia_overlay, (0, 0))
+
+            # Render story text and effects
+            self.render_text_wrapped(self.texts[self.current_text_index], screen)
+            self.render_skip_gauge(screen)
+            self.render_dust_and_scratches(screen)
+
+    def render_instructions(self, screen):
+        # Create a dramatic background for the instruction page
+        screen.fill((0, 0, 0))  # Black background for instruction
+        y = HEIGHT / 4
+        
+        # Add an elegant and majestic font style with a golden color for the instruction title
+        title_surface = self.instruction_font.render(self.instructions[0], True, (255, 215, 0))  # Gold color
+        title_rect = title_surface.get_rect(center=(WIDTH / 2, y))
+        screen.blit(title_surface, title_rect)
+        y += 100  # Increase the gap after the title
+
+        # Render the rest of the instructions with spacious and elegant line breaks
+        for line in self.instructions[1:]:
+            text_surface = self.instruction_font.render(line, True, (255, 255, 255))  # White text
+            text_rect = text_surface.get_rect(center=(WIDTH / 2, y))
+            screen.blit(text_surface, text_rect)
+            y += 80  # Increase the spacing for dramatic effect
+
+        # Optional: Add a border or some visual effect (e.g., "spartan" style)
+        pygame.draw.rect(screen, (255, 215, 0), (50, 50, WIDTH - 100, HEIGHT - 100), 5)  # Gold border to frame the instructions
 
     def render_text_wrapped(self, text, screen):
+        # Wrap and render text with fade-in
         words = text.split()
         lines = []
         current_line = ""
@@ -105,7 +164,6 @@ class StoryState(BaseState):
                 current_line = test_line
         lines.append(current_line)
 
-        # Display wrapped text centered with fade-in
         y = HEIGHT / 2 - len(lines) * 25
         for line in lines:
             line_surface = self.font.render(line, True, (255, 229, 204))
@@ -115,53 +173,32 @@ class StoryState(BaseState):
             y += 50
 
     def render_skip_gauge(self, screen):
-        # Show "Skip" gauge only if Enter is held
+        # Render skip gauge if Enter is held
         if self.skip_start_time:
             current_time = pygame.time.get_ticks()
             hold_time = current_time - self.skip_start_time
             gauge_progress = min(hold_time / self.skip_duration, 1.0)
 
-            # Gauge and "Skip" text settings
             gauge_width, gauge_height = 120, 30
             gauge_x, gauge_y = WIDTH - 140, HEIGHT - 50
 
-            # Draw gauge background and fill (simulating a blood effect)
-            pygame.draw.rect(screen, (80, 0, 0), (gauge_x, gauge_y, gauge_width, gauge_height))  # Background
-            pygame.draw.rect(screen, (200, 0, 0), (gauge_x, gauge_y, gauge_width * gauge_progress, gauge_height))  # Blood fill
+            pygame.draw.rect(screen, (80, 0, 0), (gauge_x, gauge_y, gauge_width, gauge_height))
+            pygame.draw.rect(screen, (200, 0, 0), (gauge_x, gauge_y, gauge_width * gauge_progress, gauge_height))
 
-            # Render "Skip" text centered in the gauge
             skip_text = self.small_font.render("SKIP", True, (255, 255, 255))
             skip_rect = skip_text.get_rect(center=(gauge_x + gauge_width // 2, gauge_y + gauge_height // 2))
             screen.blit(skip_text, skip_rect)
-            # g_state_manager.Change('story_1', {'initial_delay': pygame.time.get_ticks()})
-            # g_state_manager.Change('lastvictory', {'initial_delay': pygame.time.get_ticks()})
-    
+
     def render_dust_and_scratches(self, screen):
-        # Simulate dust and scratches
-        for _ in range(50):  # Adjust number for more/less dust
+        # Render random dust and scratches for vintage effect
+        for _ in range(50):
             x, y = random.randint(0, WIDTH), random.randint(0, HEIGHT)
             color = (200, 200, 200) if random.randint(0, 1) == 0 else (255, 255, 255)
-            pygame.draw.circle(screen, color, (x, y), 1)  # Small dust particles
-        for _ in range(10):  # Adjust for more/less scratches
+            pygame.draw.circle(screen, color, (x, y), 1)
+        for _ in range(10):
             x_start, y_start = random.randint(0, WIDTH), random.randint(0, HEIGHT)
             x_end, y_end = x_start + random.randint(-20, 20), y_start + random.randint(-20, 20)
             pygame.draw.line(screen, (150, 150, 150), (x_start, y_start), (x_end, y_end), 1)
-    def render(self, screen):
-        # Display background and overlays
-        if self.current_text_index < len(self.backgrounds):
-            background_image = self.backgrounds[self.current_text_index]
-            background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
-            screen.blit(background_image, (0, 0))
-        screen.blit(self.sepia_overlay, (0, 0))
-
-        # Render text and skip gauge
-        self.render_text_wrapped(self.texts[self.current_text_index], screen)
-        self.render_skip_gauge(screen)
-        self.render_dust_and_scratches(screen)
-        if random.randint(0, 20) < 2:  # Random flicker chance
-            flicker_overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
-            flicker_overlay.fill((0, 0, 0, 50))  # Slight dark overlay for flicker
-            screen.blit(flicker_overlay, (0, 0))
 
     def Exit(self):
         pygame.mixer.music.stop()

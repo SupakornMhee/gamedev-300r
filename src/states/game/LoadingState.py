@@ -28,14 +28,14 @@ class LoadingState(BaseState):
 
 
     def render(self, screen):
-        t_title = gFonts['zelda'].render("GAME OVER", False, (175, 53, 42))
+        t_title = gFonts['title'].render("GAME OVER", False, (175, 53, 42))
         rect = t_title.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 144))
         screen.blit(t_title, rect)
 
-        t_wave = gFonts['zelda_small'].render("WAVE ", False, (175, 53, 42))
+        t_wave = gFonts['title'].render("WAVE ", False, (175, 53, 42))
         rect = t_wave.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 48))
         screen.blit(t_wave, rect)
         
-        t_help = gFonts['zelda_small'].render("Press Enter", False, (175, 53, 42))
+        t_help = gFonts['title'].render("Press Enter", False, (175, 53, 42))
         rect = t_help.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 48))
         screen.blit(t_help, rect)
