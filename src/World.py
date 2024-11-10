@@ -40,8 +40,8 @@ class World:
     def update(self, dt, events):
         pass
 
-    def render(self, screen):
+    def render(self, screen: pygame.Surface):
         
         
-        screen.blit(self.bg_image, (shake_offset_x, shake_offset_y))
+        screen.blit(self.bg_image, (0,0))
         pass
