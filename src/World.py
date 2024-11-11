@@ -29,10 +29,12 @@ class World:
         self.width = WIDTH
         self.height = HEIGHT
         
-        self.bg_image = pygame.image.load("graphics/background.png")
+        self.bg_image = pygame.image.load("graphics/battlefield.png")
+        self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH,HEIGHT))
+        
         
         self.entities = []
-        self.GenerateEntities()
+        #self.GenerateEntities()
 
     def GenerateEntities(self,level) :
         pass 

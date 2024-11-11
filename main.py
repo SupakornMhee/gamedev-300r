@@ -44,9 +44,9 @@ class GameMain:
         # gSounds['music'].play(-1)
         clock = pygame.time.Clock()
 
-        #g_state_manager.Change("start")
-        # เข้า play state เลย
-        g_state_manager.Change("play")
+        
+        init_state = "play"
+        g_state_manager.Change(init_state)
         
         
         while True:
@@ -62,7 +62,6 @@ class GameMain:
             g_state_manager.render()
 
             pygame.display.update()
-
 
 if __name__ == '__main__':
     main = GameMain()
