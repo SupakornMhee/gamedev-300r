@@ -44,6 +44,6 @@ class World:
 
     def render(self, screen: pygame.Surface):
         
-        #print(self.bg_image)
+        
         screen.blit(self.bg_image, (0,0))
         pass
