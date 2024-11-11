@@ -63,6 +63,7 @@ class GameMain:
 
             pygame.display.update()
 
+
 if __name__ == '__main__':
     main = GameMain()
     main.PlayGame()
