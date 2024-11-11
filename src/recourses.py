@@ -11,7 +11,8 @@ gFonts = {
     'title': pygame.font.Font('fonts/title.ttf',60),
     'Press_Enter': pygame.font.Font('fonts/title.ttf',100),
     'Story': pygame.font.Font('fonts/CooperMdBT-Regular.ttf',48),
-    'Pause': pygame.font.Font('fonts/title.ttf',60)
+    'Pause': pygame.font.Font('fonts/title.ttf',60),
+    'Result': pygame.font.Font('fonts/Oregano-Italic.ttf',80)
 }
 '''
 gFonts = {

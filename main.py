@@ -34,7 +34,8 @@ class GameMain:
             'play': PlayState(),
             'lastvictory' : LastVictoryState(),
             'load' : LoadingState(),
-            'select': SelectItemState()
+            'select': SelectItemState(),
+            'Result': ResultState()
         }
 
         g_state_manager.SetStates(states)
