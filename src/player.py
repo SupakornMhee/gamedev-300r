@@ -4,6 +4,7 @@ from src.Dependencies import *
 class Player(EntityBase):
     def __init__(self, conf):
         super(Player, self).__init__(conf)
+        self.obtained_items = [0]*9 # แต่ละอัน มีทั้งหมด 9 อัน
 
     def update(self, dt, events):
         super().update(dt, events)

@@ -21,7 +21,7 @@ class SelectItemState(BaseState) :
         self.wave = 0
         self.option = 0
         self.item_option = self.getRandomItem()
-        self.obtained_items = None
+        self.obtained_items = [0]*9
         pass
     
     def getRandomItem(self) :
@@ -54,7 +54,12 @@ class SelectItemState(BaseState) :
                     # self.paused_option = [1, 2, 0][self.paused_option]
                     self.option = (self.option + 1) % 3
                 if event.key == pygame.K_RETURN:  # กด enter
-                    print("You choose option",self.option)
+                    # mock up
+                    print("You choose", ITEM_NAME_LIST[self.item_option[self.option]])
+                    self.obtained_items[self.item_option[self.option]] += 1
+                    self.wave += 1
+                    self.item_option = self.getRandomItem()
+                    
 
     
     def render(self, screen: pygame.Surface):
@@ -130,11 +135,11 @@ class SelectItemState(BaseState) :
                 line_y = y_pos + 200 + i * 20
                 screen.blit(line_surface, (line_x, line_y))
 
-            # current_level = self.obtained_items.get(item_name, 1)
-            # next_level = min(current_level + 1, 3)
-            # level_text = desc_font.render(f"Level: {current_level} -> {next_level}" if item_name in self.obtained_items else f"Level: {current_level}", True, (255, 255, 255))
-            # level_text_rect = level_text.get_rect(center=(item_frame_rect.centerx, y_pos + item_box_height - 40))
-            # screen.blit(level_text, level_text_rect.topleft)
+            current_level = self.obtained_items[k]
+            next_level = min(current_level + 1, 3)
+            level_text = desc_font.render(f"Level: {current_level} -> {next_level}" if current_level else f"Level: {current_level+1}", True, (255, 255, 255))
+            level_text_rect = level_text.get_rect(center=(item_frame_rect.centerx, y_pos + item_box_height - 40))
+            screen.blit(level_text, level_text_rect.topleft)
 
             # item_rects.append((item_frame_rect, power_up))
 
