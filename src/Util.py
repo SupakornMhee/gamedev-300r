@@ -197,3 +197,5 @@ class SpriteSheet(object):
         return pygame.transform.scale(
             image, (xTileSize * scalingfactor, yTileSize * scalingfactor)
         )
+        
+
