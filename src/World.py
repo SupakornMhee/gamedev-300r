@@ -29,10 +29,12 @@ class World:
         self.width = WIDTH
         self.height = HEIGHT
         
-        self.bg_image = pygame.image.load("graphics/background.png")
+        self.bg_image = pygame.image.load("graphics/battlefield.png")
+        self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH,HEIGHT))
+        
         
         self.entities = []
-        self.GenerateEntities()
+        #self.GenerateEntities()
 
     def GenerateEntities(self,level) :
         pass 
@@ -40,8 +42,8 @@ class World:
     def update(self, dt, events):
         pass
 
-    def render(self, screen):
+    def render(self, screen: pygame.Surface):
         
-        
-        screen.blit(self.bg_image, (shake_offset_x, shake_offset_y))
+        #print(self.bg_image)
+        screen.blit(self.bg_image, (0,0))
         pass

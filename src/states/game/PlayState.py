@@ -24,6 +24,7 @@ class PlayState(BaseState):
         self.paused = True
         self.paused_option = 0
         self.show_instructions = False
+        self.world = World(None, None)
         # self.level = params['level']
         # ทำหน้าเข้าเกม
         
@@ -45,6 +46,11 @@ class PlayState(BaseState):
 
         self.player.ChangeState("walk")
         '''
+    def getWinCondition() :
+        return None
+    
+    def getLoseCondition() :
+        return None
 
     def update(self, dt, events):
         for event in events:
@@ -116,6 +122,7 @@ class PlayState(BaseState):
             for i in range(4):
                 t_rect[i] = t_paused_option_font[i].get_rect(center=(WIDTH // 2, HEIGHT // 2 + 72 * (i - 1)))
                 screen.blit(t_paused_option_font[i], t_rect[i])
+                
     def render_instructions(self, screen):
         # Display instructions on black background
         screen.fill((0, 0, 0))
@@ -152,7 +159,7 @@ class PlayState(BaseState):
     
     def render(self, screen: pygame.Surface):
         # World Render
-        # self.World.render(screen)
+        self.world.render(screen)
 
         # ใส่ stats ต่างๆ ภายในเกม ตรงด้านบนจอ
         # Ex. Health, Enemy Remaining, etc.
