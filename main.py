@@ -47,7 +47,7 @@ class GameMain:
         clock = pygame.time.Clock()
 
         
-        init_state = "select"
+        init_state = "start"
         g_state_manager.Change(init_state)
         
         
