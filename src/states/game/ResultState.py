@@ -13,11 +13,13 @@ class ResultState(BaseState):
         self.start_time = None
         self.wave_number = 1
         self.title_animation_progress = -800
+        self.sparta_music_playing = False
         
         # Music settings
         self.music_loaded = False
         self.victory_music = "./sounds/300Victory.mp3"
         self.defeat_music = "./sounds/Conan_sad_music.mp4"
+        
         
         # Video and audio handling
         self.video_clip = None
@@ -95,7 +97,7 @@ class ResultState(BaseState):
         if params is None:
             params = {}
         self.victory = params.get("victory", True)
-        self.wave_number = params.get("wave_number", 4)
+        self.wave_number = params.get("wave_number", 5)
         self.start_time = pygame.time.get_ticks()
         self.show_title = True
         self.show_but_message = False
@@ -158,10 +160,19 @@ class ResultState(BaseState):
             self.video_clip.close()
             self.video_clip = None
         
-        # Stop music
-        if self.music_loaded:
-            pygame.mixer.music.fadeout(1000)  # Fade out over 1 second
-            self.music_loaded = False
+        # # Stop music
+        # if self.music_loaded:
+        #     pygame.mixer.music.fadeout(1000)  # Fade out over 1 second
+        #     self.music_loaded = False
+        # Stop all music before exiting
+        pygame.mixer.music.stop()  # หยุดเพลงทันทีก่อน
+        
+        # Reset all music flags
+        self.music_loaded = False
+        self.sparta_music_playing = False
+        self.audio_started = False
+        
+
             
         print("Exiting ResultState...")
 
@@ -247,14 +258,19 @@ class ResultState(BaseState):
                 if time_elapsed > self.title_duration + self.message_duration:
                     self.show_video = True
                     self.video_start_time = current_time
-                    if not self.audio_started:
-                        pygame.mixer.music.load(self.sparta_audio)
-                        pygame.mixer.music.play()  # เริ่มเล่นเสียง
-                        self.audio_started = True
+                    if not self.sparta_music_playing:
+                        try:
+                            pygame.mixer.music.stop()  # หยุดเพลงที่กำลังเล่นอยู่ก่อน
+                            pygame.mixer.music.load(self.sparta_audio)
+                            pygame.mixer.music.play()
+                            self.sparta_music_playing = True
+                        except Exception as e:
+                            print(f"Could not load sparta audio: {e}")
             elif self.show_video and self.video_clip:
                 video_time = (current_time - self.video_start_time) / 1000.0
                 if video_time >= self.video_clip.duration:
-                    pygame.mixer.music.stop()
+                    pygame.mixer.music.stop()  # หยุดเพลงก่อนเปลี่ยน state
+                    self.sparta_music_playing = False
                     g_state_manager.Change('play', {'wave_number': self.wave_number + 1})
 
         # Special handling for Wave 4 victory sequence
