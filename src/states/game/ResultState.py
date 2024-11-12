@@ -14,12 +14,22 @@ class ResultState(BaseState):
         self.wave_number = 1
         self.title_animation_progress = -800
         self.sparta_music_playing = False
-        
+        self.skip_start_time = None
+        self.skip_duration = 3000  # 3 วินาที
+        self.small_font = pygame.font.Font('./fonts/CooperMdBT-Regular.ttf', 24)
         # Music settings
         self.music_loaded = False
         self.victory_music = "./sounds/300Victory.mp3"
         self.defeat_music = "./sounds/Conan_sad_music.mp4"
+        # เพิ่มส่วนของ Wave 9 video/audio
+        self.xerxes_video = "./sounds/Xerxes-coming.mp4"
+        self.xerxes_audio = "./sounds/Xerxes-coming.mp3"
+        self.xerxes_music_playing = False
         
+        # State flags สำหรับ Wave 9 video
+        self.show_xerxes_video = False
+        self.xerxes_video_start_time = None
+        self.xerxes_clip = None
         
         # Video and audio handling
         self.video_clip = None
@@ -52,7 +62,15 @@ class ResultState(BaseState):
         self.sequence_index = 0
         self.sequence_start_time = None
         self.show_sequence = False
+        # เพิ่มส่วนของ Wave 4 video/audio
+        self.messenger_video = "./sounds/Messenger.mp4"
+        self.messenger_audio = "./sounds/Messenger.mp3"
+        self.messenger_music_playing = False
         
+        # State flags สำหรับ Wave 4 video
+        self.show_messenger_video = False
+        self.messenger_video_start_time = None
+        self.messenger_clip = None
         # State flags
         self.show_title = True
         self.show_but_message = False
@@ -77,7 +95,7 @@ class ResultState(BaseState):
             6: "Sparta's spirit burns brighter with each victory!",
             7: "Even mighty Persian forces fall before you!",
             8: "Victory is within reach! The gods favor you!",
-            9: "Nothing stands between you and ultimate glory!",
+            9: "Finally, Xerxes Reveals Himself!!!!!!!!!!!",
             10: "You have changed history and defeated Xerxes!"
         }
         self.defeat_messages = {
@@ -153,23 +171,40 @@ class ResultState(BaseState):
             self.shadow_color = (50, 0, 0)
             self.message_color = (150, 150, 150)
             self.effect_particles = self.generate_particles((100, 100, 100), 80)
+        # Load video for Wave 4 victory
+        if self.victory and self.wave_number == 4:
+            try:
+                self.messenger_clip = VideoFileClip(self.messenger_video)
+            except Exception as e:
+                print(f"Could not load messenger video: {e}")
+                self.messenger_clip = None
+        # Load video for Wave 9 victory
+        if self.victory and self.wave_number == 9:
+            try:
+                self.xerxes_clip = VideoFileClip(self.xerxes_video)
+            except Exception as e:
+                print(f"Could not load Xerxes video: {e}")
+                self.xerxes_clip = None
 
     def Exit(self):
-        # Clean up video resources
+        # Clean up all video resources
         if self.video_clip is not None:
             self.video_clip.close()
             self.video_clip = None
+        if self.messenger_clip is not None:
+            self.messenger_clip.close()
+            self.messenger_clip = None
+        if self.xerxes_clip is not None:
+            self.xerxes_clip.close()
+            self.xerxes_clip = None
         
-        # # Stop music
-        # if self.music_loaded:
-        #     pygame.mixer.music.fadeout(1000)  # Fade out over 1 second
-        #     self.music_loaded = False
-        # Stop all music before exiting
-        pygame.mixer.music.stop()  # หยุดเพลงทันทีก่อน
+        pygame.mixer.music.stop()
         
         # Reset all music flags
         self.music_loaded = False
         self.sparta_music_playing = False
+        self.messenger_music_playing = False
+        self.xerxes_music_playing = False
         self.audio_started = False
         
 
@@ -212,7 +247,7 @@ class ResultState(BaseState):
                         if event.key == pygame.K_y:  # Submit to Xerxes
                             g_state_manager.Change('start')
                         else:  # Continue fighting
-                            g_state_manager.Change('play', {'wave_number': self.wave_number + 1})
+                            g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
                 # Regular return key handler - only for defeat cases
                 elif event.key == pygame.K_RETURN and not self.victory:
                     pygame.mixer.music.fadeout(500)
@@ -221,6 +256,29 @@ class ResultState(BaseState):
 
         current_time = pygame.time.get_ticks()
         time_elapsed = current_time - self.start_time
+
+        # จัดการ Enter key hold สำหรับ skip
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RETURN]:
+            if self.skip_start_time is None:
+                self.skip_start_time = pygame.time.get_ticks()
+            elif pygame.time.get_ticks() - self.skip_start_time >= self.skip_duration:
+                # Skip video based on current state
+                if self.victory and self.wave_number == 5 and self.show_video:
+                    pygame.mixer.music.stop()
+                    self.sparta_music_playing = False
+                    g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
+                elif self.victory and self.wave_number == 4 and self.show_messenger_video:
+                    self.show_messenger_video = False
+                    self.show_choice = True
+                    pygame.mixer.music.stop()
+                    self.messenger_music_playing = False
+                elif self.victory and self.wave_number == 9 and self.show_xerxes_video:
+                    pygame.mixer.music.stop()
+                    self.xerxes_music_playing = False
+                    g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
+        else:
+            self.skip_start_time = None
 
         # Special handling for Wave 1 victory sequence
         if self.victory and self.wave_number == 1:
@@ -245,7 +303,7 @@ class ResultState(BaseState):
                     if self.wave1_sequence_index >= len(self.special_victory_sequence_wave1):
                         pygame.mixer.music.fadeout(500)
                         self.music_loaded = False
-                        g_state_manager.Change('play', {'wave_number': self.wave_number + 1})
+                        g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
 
         # Special handling for Wave 5 victory sequence
         elif self.victory and self.wave_number == 5:
@@ -271,7 +329,7 @@ class ResultState(BaseState):
                 if video_time >= self.video_clip.duration:
                     pygame.mixer.music.stop()  # หยุดเพลงก่อนเปลี่ยน state
                     self.sparta_music_playing = False
-                    g_state_manager.Change('play', {'wave_number': self.wave_number + 1})
+                    g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
 
         # Special handling for Wave 4 victory sequence
         elif self.victory and self.wave_number == 4:
@@ -298,7 +356,49 @@ class ResultState(BaseState):
                     self.sequence_index += 1
                     if self.sequence_index >= len(self.special_victory_sequence_wave4):
                         self.show_sequence = False
-                        self.show_choice = True
+                        self.show_messenger_video = True
+                        self.messenger_video_start_time = current_time
+                        if not self.messenger_music_playing:
+                            try:
+                                pygame.mixer.music.stop()
+                                pygame.mixer.music.load(self.messenger_audio)
+                                pygame.mixer.music.play()
+                                self.messenger_music_playing = True
+                            except Exception as e:
+                                print(f"Could not load messenger audio: {e}")
+            elif self.show_messenger_video and self.messenger_clip:
+                video_time = (current_time - self.messenger_video_start_time) / 1000.0
+                if video_time >= self.messenger_clip.duration:
+                    self.show_messenger_video = False
+                    self.show_choice = True
+                    pygame.mixer.music.stop()
+                    self.messenger_music_playing = False
+
+        # Special handling for Wave 9 victory sequence
+        elif self.victory and self.wave_number == 9:
+            if self.show_title:
+                if self.title_animation_progress < 0:
+                    self.title_animation_progress += 40
+                if time_elapsed > self.title_duration:
+                    self.show_title = False
+            elif not self.show_xerxes_video:
+                if time_elapsed > self.title_duration + self.message_duration:
+                    self.show_xerxes_video = True
+                    self.xerxes_video_start_time = current_time
+                    if not self.xerxes_music_playing:
+                        try:
+                            pygame.mixer.music.stop()
+                            pygame.mixer.music.load(self.xerxes_audio)
+                            pygame.mixer.music.play()
+                            self.xerxes_music_playing = True
+                        except Exception as e:
+                            print(f"Could not load Xerxes audio: {e}")
+            elif self.show_xerxes_video and self.xerxes_clip:
+                video_time = (current_time - self.xerxes_video_start_time) / 1000.0
+                if video_time >= self.xerxes_clip.duration:
+                    pygame.mixer.music.stop()
+                    self.xerxes_music_playing = False
+                    g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
         
         # Regular victory message timing
         elif self.victory:
@@ -310,7 +410,7 @@ class ResultState(BaseState):
             elif time_elapsed > self.title_duration + self.message_duration:
                 pygame.mixer.music.fadeout(500)
                 self.music_loaded = False
-                g_state_manager.Change('play', {'wave_number': self.wave_number + 1})
+                g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
                 
         # Regular defeat message timing
         else:
@@ -319,7 +419,22 @@ class ResultState(BaseState):
                     self.title_animation_progress += 40
                 if time_elapsed > self.title_duration:
                     self.show_title = False
+    def render_skip_gauge(self, screen):
+        # Render skip gauge if Enter is held
+        if self.skip_start_time:
+            current_time = pygame.time.get_ticks()
+            hold_time = current_time - self.skip_start_time
+            gauge_progress = min(hold_time / self.skip_duration, 1.0)
 
+            gauge_width, gauge_height = 120, 30
+            gauge_x, gauge_y = WIDTH - 140, HEIGHT - 50
+
+            pygame.draw.rect(screen, (80, 0, 0), (gauge_x, gauge_y, gauge_width, gauge_height))
+            pygame.draw.rect(screen, (200, 0, 0), (gauge_x, gauge_y, gauge_width * gauge_progress, gauge_height))
+
+            skip_text = self.small_font.render("SKIP", True, (255, 255, 255))
+            skip_rect = skip_text.get_rect(center=(gauge_x + gauge_width // 2, gauge_y + gauge_height // 2))
+            screen.blit(skip_text, skip_rect)
     def render(self, screen):
         # Special rendering for Wave 5 victory with video
         if self.victory and self.wave_number == 5:
@@ -339,10 +454,11 @@ class ResultState(BaseState):
                     
                     # Draw video frame
                     screen.blit(scaled_surface, (0, 0))
+                    self.render_skip_gauge(screen)  # Add skip gauge
                 except Exception as e:
                     print(f"Error rendering video frame: {e}")
                     self.show_video = False
-                    g_state_manager.Change('play', {'wave_number': self.wave_number + 1})
+                    g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
             else:
                 # Regular rendering for pre-video sequence
                 screen.fill(self.background_color)
@@ -374,7 +490,7 @@ class ResultState(BaseState):
                         screen, message, (WIDTH / 2, HEIGHT / 2),
                         gFonts['Story'], self.message_color, self.shadow_color
                     )
-            self.render_particles(screen)
+            
         
         # Special rendering for Wave 4 victory
         elif self.victory and self.wave_number == 4:
@@ -386,23 +502,78 @@ class ResultState(BaseState):
                 but_rect = but_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
                 screen.blit(but_surface, but_rect)
             elif self.show_sequence:
-                # Render current sequence message
                 if self.sequence_index < len(self.special_victory_sequence_wave4):
                     message = self.special_victory_sequence_wave4[self.sequence_index]
                     self.render_wrapped_text_with_shadow(
                         screen, message, (WIDTH / 2, HEIGHT / 2), 
                         gFonts['Story'], self.message_color, self.shadow_color
                     )
+            elif self.show_messenger_video and self.messenger_clip:
+                try:
+                    # Get current video time
+                    video_time = (pygame.time.get_ticks() - self.messenger_video_start_time) / 1000.0
+                    
+                    # Get video frame at current time
+                    frame = self.messenger_clip.get_frame(video_time % self.messenger_clip.duration)
+                    
+                    # Convert frame to pygame surface
+                    frame_surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
+                    
+                    # Scale video to screen size
+                    scaled_surface = pygame.transform.scale(frame_surface, (WIDTH, HEIGHT))
+                    
+                    # Draw video frame
+                    screen.blit(scaled_surface, (0, 0))
+                    self.render_skip_gauge(screen)  # Add skip gauge
+                except Exception as e:
+                    print(f"Error rendering messenger video frame: {e}")
+                    self.show_messenger_video = False
+                    self.show_choice = True
             elif self.show_choice:
                 # Render choice messages
-                y_offset = -50  # Start above center
+                y_offset = -50
                 for message in self.choice_messages:
                     self.render_wrapped_text_with_shadow(
                         screen, message, (WIDTH / 2, HEIGHT / 2 + y_offset),
                         gFonts['Story'], self.message_color, self.shadow_color
                     )
-                    y_offset += 50  # Move down for next message
-            self.render_particles(screen)
+                    y_offset += 50
+            
+
+        # Special rendering for Wave 9 victory with Xerxes video
+        elif self.victory and self.wave_number == 9:
+            if self.show_xerxes_video and self.xerxes_clip:
+                try:
+                    # Get current video time
+                    video_time = (pygame.time.get_ticks() - self.xerxes_video_start_time) / 1000.0
+                    
+                    # Get video frame at current time
+                    frame = self.xerxes_clip.get_frame(video_time % self.xerxes_clip.duration)
+                    
+                    # Convert frame to pygame surface
+                    frame_surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
+                    
+                    # Scale video to screen size
+                    scaled_surface = pygame.transform.scale(frame_surface, (WIDTH, HEIGHT))
+                    
+                    # Draw video frame
+                    screen.blit(scaled_surface, (0, 0))
+                    self.render_skip_gauge(screen)  # Add skip gauge
+                except Exception as e:
+                    print(f"Error rendering Xerxes video frame: {e}")
+                    self.show_xerxes_video = False
+                    g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
+            else:
+                screen.fill(self.background_color)
+                if self.show_title:
+                    self._render_title(screen, "VICTORY!")
+                elif not self.show_xerxes_video:
+                    message = self.victory_messages[self.wave_number]
+                    self.render_wrapped_text_with_shadow(
+                        screen, message, (WIDTH / 2, HEIGHT / 2 - 50),
+                        gFonts['Story'], self.message_color, self.shadow_color
+                    )
+                self.render_particles(screen)
         
         # Regular victory/defeat rendering
         else:
@@ -446,7 +617,7 @@ class ResultState(BaseState):
             particle["y"] += random.randint(-1, 1)
             particle["x"] += random.randint(-1, 1)
 
-    def render_wrapped_text_with_shadow(self, screen, text, position, font, color, shadow_color, max_width=600):
+    def render_wrapped_text_with_shadow(self, screen, text, position, font, color, shadow_color, max_width=900):
         words = text.split()
         lines = []
         current_line = ""
