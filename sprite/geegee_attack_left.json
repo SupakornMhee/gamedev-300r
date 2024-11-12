@@ -1,0 +1,36 @@
+{
+    "spriteSheetURL": "./graphics/geegee_attack_left.png",
+    "type":"animation",
+    "size":[184,228],
+    "sprites":[
+        {
+            "name":"geegee_attack_left",
+            "images":[
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":184,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":368,
+                    "y":0,
+                    "scale":1
+                }
+            ],
+            "idle_image":
+			{
+				"x":0,
+				"y":0,
+				"scale":1
+		     },
+	 	    "loop":true,
+            "interval_time":0.15,
+            "colorKey": null
+        }
+]
+}
