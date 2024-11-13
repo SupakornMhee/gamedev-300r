@@ -46,10 +46,10 @@ class PlayState(BaseState):
 
         self.player.ChangeState("walk")
         '''
-    def getWinCondition() :
+    def getWinCondition(self) :
         return None
     
-    def getLoseCondition() :
+    def getLoseCondition(self) :
         return None
 
     def update(self, dt, events):
@@ -66,6 +66,11 @@ class PlayState(BaseState):
                     self.paused = True
                     self.paused_option = 0  # default option
 
+        if self.getWinCondition() :
+            pass
+        if self.getLoseCondition() :
+            pass
+        
         # ถ้า paused -- โดน return ตัดจบ
         if self.paused:
 

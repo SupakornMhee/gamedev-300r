@@ -35,7 +35,7 @@ class GameMain:
             'lastvictory' : LastVictoryState(),
             'load' : LoadingState(),
             'select': SelectItemState(),
-            'Result': ResultState()
+            'result': ResultState()
         }
 
         g_state_manager.SetStates(states)
@@ -47,8 +47,9 @@ class GameMain:
         clock = pygame.time.Clock()
 
         
-        init_state = "start"
-        g_state_manager.Change(init_state)
+        init_state = "result"
+        params = None
+        g_state_manager.Change(init_state, None)
         
         
         while True:
