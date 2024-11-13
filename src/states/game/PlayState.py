@@ -24,7 +24,9 @@ class PlayState(BaseState):
         self.paused = True
         self.paused_option = 0
         self.show_instructions = False
-        self.world = World(None, None)
+        self.wave_number = params.get("wave_number", 1)
+        self.world = World(self.wave_number, None)
+        print("Entering Playstate...")
         # self.level = params['level']
         # ทำหน้าเข้าเกม
         
@@ -47,7 +49,7 @@ class PlayState(BaseState):
         self.player.ChangeState("walk")
         '''
     def getWinCondition(self) :
-        return None
+        return self.paused == False
     
     def getLoseCondition(self) :
         return None
@@ -66,10 +68,7 @@ class PlayState(BaseState):
                     self.paused = True
                     self.paused_option = 0  # default option
 
-        if self.getWinCondition() :
-            pass
-        if self.getLoseCondition() :
-            pass
+        
         
         # ถ้า paused -- โดน return ตัดจบ
         if self.paused:
@@ -103,6 +102,15 @@ class PlayState(BaseState):
                         self.show_instructions = False  # Close instructions page
             return None
 
+        if self.getWinCondition() :
+            if self.wave_number == 10:
+                g_state_manager.Change("lastvictory")
+            else :
+                params = {"wave_number": self.wave_number, "victory":True}
+                g_state_manager.Change("result",params)
+        if self.getLoseCondition() :
+            params = {"wave_number": self.wave_number, "victory":False}
+            g_state_manager.Change("result",params)
         #self.World.update(dt, events)
 
         # if self.player.health == 0:
@@ -191,4 +199,4 @@ class PlayState(BaseState):
             
 
     def Exit(self):
-        pass
+        print("Exiting PlayState...")

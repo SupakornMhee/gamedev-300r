@@ -25,7 +25,7 @@ from src.player import *
 import pygame
 
 class World:
-    def __init__(self, level, player: Player):
+    def __init__(self, wave_number, player: Player):
         self.width = WIDTH
         self.height = HEIGHT
         

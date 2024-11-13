@@ -6,6 +6,9 @@ from src.constants import *
 
 class LoadingState(BaseState):
     def __init__(self):
+        pass
+    
+    def AssignVariable(self) :
         # เปลี่ยนจาก array เป็น dictionary เหมือนใน ResultState
         self.wave_titles = {
             1: "The Awakening of Leonidas",
@@ -42,6 +45,8 @@ class LoadingState(BaseState):
         ]
 
     def Enter(self, params):
+        self.AssignVariable()
+        print("Entering LoadingState...")
         if params is None:
             params = {}
         # รับค่า wave_number จาก params เหมือน ResultState

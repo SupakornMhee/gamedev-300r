@@ -8,6 +8,9 @@ from src.recourses import *
 
 class StartState(BaseState):
     def __init__(self):
+        pass
+
+    def AssignVariable(self) :
         # Background and shake effect setup
         self.bg_image = pygame.image.load("./graphics/background.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
@@ -36,7 +39,7 @@ class StartState(BaseState):
         # Music fade control
         self.fade_out_music = False
         self.music_started = False
-
+        
     def Enter(self, params):
         print(self.bg_image)
 

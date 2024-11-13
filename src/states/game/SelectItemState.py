@@ -18,7 +18,7 @@ class SelectItemState(BaseState) :
 
     def Enter(self, params):
         self.player = None #Player()
-        self.wave = 0
+        self.wave_number = params.get("wave_number", 5)
         self.option = 0
         self.item_option = self.getRandomItem()
         self.obtained_items = [0]*9
@@ -56,9 +56,10 @@ class SelectItemState(BaseState) :
                 if event.key == pygame.K_RETURN:  # กด enter
                     # mock up
                     print("You choose", ITEM_NAME_LIST[self.item_option[self.option]])
-                    self.obtained_items[self.item_option[self.option]] += 1
-                    self.wave += 1
-                    self.item_option = self.getRandomItem()
+                    #self.player.upgrade(self.item_option[self.option])
+                    #self.obtained_items[self.item_option[self.option]] += 1
+                    # go to load next state
+                    g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
                     
 
     
@@ -78,7 +79,7 @@ class SelectItemState(BaseState) :
             title_y += line_surface.get_height() + 5
 
         wave_font = pygame.font.SysFont(None, 36)
-        wave_text = wave_font.render("Wave " + str(self.wave), True, (255, 255, 255))
+        wave_text = wave_font.render("Wave " + str(self.wave_number), True, (255, 255, 255))
         screen.blit(wave_text, (main_frame_rect.centerx - wave_text.get_width() // 2, title_y + 20))
 
         item_box_width = 220

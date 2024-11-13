@@ -7,6 +7,9 @@ from src.recourses import *
 
 class StoryState(BaseState):
     def __init__(self):
+        pass
+    
+    def AssignVariable(self) :
         # Basic setup and initializations
         pygame.mixer.init()
         pygame.mixer.music.load('./sounds/backgroundstory1.mp3')
