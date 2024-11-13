@@ -24,19 +24,19 @@ class LastVictoryState(BaseState):
             "300: REWRITTEN",
             "",
             "Director",
-            "6422781276"
+            "6422781276",
             "Danuvasin Pangsa-art",
             "",
             "Producer",
-            "6422781235"
+            "6422781235",
             "Thanapoom Noywijith",
             "",
             "Senior Developer",
-            "6422780146"
+            "6422780146",
             "Supakorn Nilsuwan",
             "",
             "Art Director",
-            "6422782738"
+            "6422782738",
             "Put Thitisawat",
         ]
 
@@ -73,6 +73,8 @@ class LastVictoryState(BaseState):
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+                if event.key == pygame.K_RETURN:
+                    g_state_manager.Change("start")
 
         current_time = pygame.time.get_ticks()
         time_elapsed = current_time - self.start_time
