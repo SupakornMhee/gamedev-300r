@@ -62,6 +62,7 @@ class StoryState(BaseState):
         self.skip_duration = 3000  # 3 seconds hold duration to skip
 
     def Enter(self, params):
+        self.AssignVariable()
         # pygame.mixer.music.play()
         # self.start_time = params.get('initial_delay', pygame.time.get_ticks())
         pygame.mixer.music.stop()

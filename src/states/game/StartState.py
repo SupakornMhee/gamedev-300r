@@ -41,6 +41,7 @@ class StartState(BaseState):
         self.music_started = False
         
     def Enter(self, params):
+        self.AssignVariable()
         print(self.bg_image)
 
     def update(self, dt, events):
