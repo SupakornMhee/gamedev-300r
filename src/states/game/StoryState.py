@@ -59,7 +59,18 @@ class StoryState(BaseState):
         self.skip_duration = 3000  # 3 seconds hold duration to skip
 
     def Enter(self, params):
-        pygame.mixer.music.play()
+        # pygame.mixer.music.play()
+        # self.start_time = params.get('initial_delay', pygame.time.get_ticks())
+        pygame.mixer.music.stop()
+        
+        # โหลดและเล่นเพลงใหม่
+        try:
+            pygame.mixer.music.load('./sounds/backgroundstory1.mp3')
+            pygame.mixer.music.set_volume(0.5)
+            pygame.mixer.music.play()
+        except Exception as e:
+            print(f"Could not load story background music: {e}")
+            
         self.start_time = params.get('initial_delay', pygame.time.get_ticks())
 
     def update(self, dt, events):
