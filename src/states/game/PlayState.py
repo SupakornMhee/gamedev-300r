@@ -176,7 +176,28 @@ class PlayState(BaseState):
 
         # ใส่ stats ต่างๆ ภายในเกม ตรงด้านบนจอ
         # Ex. Health, Enemy Remaining, etc.
+        # Display the wave number at the top center of the screen
+        wave_font = pygame.font.Font('./fonts/CooperMdBT-Regular.ttf', 40)  # Adjust the font and size as needed
+        wave_text = wave_font.render(f"Wave: {self.wave_number}", True, (255, 255, 255))  # White color for text
+        wave_rect = wave_text.get_rect(center=(WIDTH // 2, 20))  # Position at the top center
+        pygame.draw.rect(screen, (0, 0, 0), wave_rect.inflate(20, 10))  # Background rectangle for visibility
+        screen.blit(wave_text, wave_rect)
+        # Mock data for enemy count and health
+        enemy_count = 0  # Placeholder value for enemies
+        health = 100     # Placeholder value for health
 
+        # Display enemy count on the top left
+        enemy_font = pygame.font.Font('./fonts/CooperMdBT-Regular.ttf', 30)
+        enemy_text = enemy_font.render(f"Enemies: {enemy_count}", True, (0, 0, 0))  # Black color for text
+        enemy_rect = enemy_text.get_rect(topleft=(20, 20))
+        pygame.draw.rect(screen, (255, 255, 255), enemy_rect.inflate(10, 5))  # White background for visibility
+        screen.blit(enemy_text, enemy_rect)
+
+        # Display health on the top right
+        health_text = enemy_font.render(f"Health: {health}", True, (255, 0, 0))  # Red color for text
+        health_rect = health_text.get_rect(topright=(WIDTH - 20, 20))
+        pygame.draw.rect(screen, (255, 255, 255), health_rect.inflate(10, 5))  # White background for visibility
+        screen.blit(health_text, health_rect)
         '''
         health_left = self.player.health
 
