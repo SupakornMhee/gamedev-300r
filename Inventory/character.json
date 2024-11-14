@@ -1,0 +1,14 @@
+{
+    "name": "Leonidas",
+    "base_stats": {
+        "health": 100,
+        "attack_damage": 10,
+        "movement_speed": 10,
+        "attack_speed": 5,
+        "armor": 5,
+        "damage_reduction": 1.0,
+        "damage_against_bosses": 5,
+        "health_regenerate": 1
+    },
+    "profile_image_index": 0
+}
