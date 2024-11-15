@@ -6,8 +6,8 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((800, 600))
 
     # Load the spritesheets
-    item_spritesheet = pygame.image.load("sprite_sheet.png")
-    profile_spritesheet = pygame.image.load("sprite_sheet_character.png")
+    item_spritesheet = pygame.image.load("inventory/sprite_sheet.png")
+    profile_spritesheet = pygame.image.load("inventory/sprite_sheet_character.png")
 
     # Example obtained items with cumulative levels for testing
     obtained_items = {

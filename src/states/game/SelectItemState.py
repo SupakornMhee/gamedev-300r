@@ -91,7 +91,6 @@ class SelectItemState(BaseState) :
         start_x = main_frame_rect.left + (main_frame_rect.width - (columns * item_box_width + (columns - 1) * item_gap_x)) // 2
         start_y = title_y + 60
 
-        item_rects = []
         #for idx, power_up in enumerate(self.item_option):
         # power_up --> 
         for idx, k in enumerate(self.item_option) : # k = index of item

@@ -39,15 +39,15 @@ for idx, rect in enumerate(item_rects):
         ITEM_IMAGE_LIST.append(None)
 
 ITEM_DESC_FULL = [
-    {"name": "Sword of Leonidas", "description": "+4% Attack Damage", "tier": "common", "image_index": 0},
-    {"name": "Hermes's boots", "description": "+2% Movement Speed", "tier": "common", "image_index": 1},
-    {"name": "Armor of King Dream", "description": "+5 Health", "tier": "uncommon", "image_index": 2},
-    {"name": "Shield of Sparta", "description": "+5 Armor", "tier": "common", "image_index": 3},
-    {"name": "Helm of Hercules", "description": "+2 Armor", "tier": "uncommon", "image_index": 4},
-    {"name": "Mark's Gauntlet", "description": "+2% Attack Speed", "tier": "common", "image_index": 5},
-    {"name": "Ring of Midas", "description": "+10% Damage against bosses", "tier": "legendary", "image_index": 6},
-    {"name": "Amulet of Athena", "description": "+0.5/s Health regenerate", "tier": "legendary", "image_index": 7},
-    {"name": "Cape of the Phantom", "description": "+5% Damage reduction", "tier": "legendary", "image_index": 8}
+    {"name": "Sword of Leonidas", "description": "+4% Attack Damage", "tier": "common"},
+    {"name": "Hermes's boots", "description": "+2% Movement Speed", "tier": "common"},
+    {"name": "Armor of King Dream", "description": "+5 Health", "tier": "uncommon"},
+    {"name": "Shield of Sparta", "description": "+5 Armor", "tier": "common"},
+    {"name": "Helm of Hercules", "description": "+2 Armor", "tier": "uncommon"},
+    {"name": "Mark's Gauntlet", "description": "+2% Attack Speed", "tier": "common"},
+    {"name": "Ring of Midas", "description": "+10% Damage against bosses", "tier": "legendary"},
+    {"name": "Amulet of Athena", "description": "+0.5/s Health regenerate", "tier": "legendary"},
+    {"name": "Cape of the Phantom", "description": "+5% Damage reduction", "tier": "legendary"}
 ]
 ITEM_NAME_LIST = list(map(lambda x:x["name"],ITEM_DESC_FULL))
 ITEM_DESC_LIST = list(map(lambda x:x["description"],ITEM_DESC_FULL))
@@ -80,6 +80,48 @@ def get_description_color(description: str):
         return DESCRIPTION_COLORS["speed"]
     else:
         return (200, 200, 200)  # Default color 
+
+STATS_LABEL_LIST = {
+    "health": (255, 0, 0),
+    "attack_damage": (255, 69, 0),
+    "movement_speed": (0, 255, 255),
+    "attack_speed": (0, 255, 0),
+    "armor": (255, 255, 255),
+    "damage_reduction": (0, 0, 255),
+    "damage_against_bosses": (255, 140, 0),
+    "health_regenerate": (255, 0, 0),
+}
+
+def get_border_color(tier):
+    return COLORS.get(tier, COLORS["common"])
+
+def draw_bordered_rect(screen, rect, color, border_color, border_width=3):
+    pygame.draw.rect(screen, border_color, rect, border_width)
+    inner_rect = rect.inflate(-border_width * 2, -border_width * 2)
+    pygame.draw.rect(screen, color, inner_rect)
+
+def get_stat_color(stat_name):
+    """Get the color associated with a stat name."""
+    return STAT_LABELS.get(stat_name, (255, 255, 255))  # Default to white if not found
+
+def draw_stat_labels(screen, font, stats, start_x, start_y, line_height=30):
+    """Draws stat labels on the screen with appropriate colors."""
+    y_offset = start_y
+    for stat_name, value in stats.items():
+        color = get_stat_color(stat_name)
+        label = stat_name.replace("_", " ").capitalize()
+        text = font.render(f"{label}: {value}", True, color)
+        screen.blit(text, (start_x, y_offset))
+        y_offset += line_height
+
+
+
+
+
+
+
+
+
 
 '''
 NUMBER_OF_MONSTER=10

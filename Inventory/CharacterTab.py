@@ -11,11 +11,11 @@ class CharacterTab:
         self.item_images = []
 
         # Load character data
-        with open("character.json") as f:
+        with open("inventory/character.json") as f:
             self.character_data = json.load(f)
 
         # Load item data and sprite images
-        with open("items.json") as f:
+        with open("inventory/items.json") as f:
             self.items_data = json.load(f)
         self.load_item_sprites()
 

@@ -23,6 +23,7 @@ class PlayState(BaseState):
     def Enter(self, params):
         self.paused = True
         self.paused_option = 0
+        self.show_inventory = False
         self.show_instructions = False
         self.wave_number = params.get("wave_number", 1)
         self.world = World(self.wave_number, None)
@@ -63,19 +64,24 @@ class PlayState(BaseState):
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-                # กด p เพื่อ pause/resume
+                        
+        if self.show_inventory:
+            for event in events:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_TAB:
+                        self.show_inventory = False
+            return None
+        
+        for event in events:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     self.paused = True
                     self.paused_option = 0  # default option
-
-        
-        
+                if event.key == pygame.K_TAB:
+                    self.show_inventory = True
+                    
         # ถ้า paused -- โดน return ตัดจบ
         if self.paused:
-
-            # ทำสามอัน: resume / retry (เริ่มด่าน 1 ใหม่) / quit
-            # 0 = resume / 1 = retry / 2 = quit
-            
             for event in events:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_w:  # go up
@@ -118,6 +124,74 @@ class PlayState(BaseState):
 
         # temp
         # self.room.update(dt, events)
+        
+    def renderInventoryPage(self, screen: pygame.Surface) :
+        screen.fill((80, 80, 80))
+
+        profile_spritesheet = pygame.image.load("graphics/leonidas.png")
+        profile_image_rect = pygame.Rect(1, 0, 93, 104)
+        profile_image = profile_spritesheet.subsurface(profile_image_rect)
+        profile_position = (50, 50)
+        profile_border_rect = pygame.Rect(profile_position[0] - 5, profile_position[1] - 5, 93 + 10, 104 + 10)
+        draw_bordered_rect(screen, profile_border_rect, (0, 0, 0), (0, 0, 0))  # Black border around profile
+        screen.blit(profile_image, profile_position)
+
+        font = pygame.font.SysFont(None, 40)
+        name_text = font.render("Leonidas", True, (255, 0, 0))
+        screen.blit(name_text, (160, 50))
+
+        stats_font = pygame.font.SysFont(None, 30)
+        stats = self.character_data["base_stats"]
+        #draw_stat_labels(screen, stats_font, stats, 160, 100)
+        y_offset = 100
+        for stat_name, value in stats.items():
+            color = get_stat_color(stat_name)
+            label = stat_name.replace("_", " ").capitalize()
+            text = stats_font.render(f"{label}: {value}", True, color)
+            screen.blit(text, (160, y_offset))
+            y_offset += 30
+        screen.blit(text, (160, 100))
+        
+        
+        self.renderInventoryItem(screen)
+    
+    def renderInventoryItem(self, screen: pygame.Surface) :
+        item_box_size = 70
+        item_padding = 15
+        start_x = 500
+        start_y = 50
+        columns = 3
+
+        obtained_items = [0,3,0,0,1,0,0,0,2] # แต่ละอัน มีทั้งหมด 9 อัน
+        
+        for index in range(9):
+            col = index % columns
+            row = index // columns
+            x = start_x + col * (item_box_size + item_padding)
+            y = start_y + row * (item_box_size + item_padding)
+            
+            item_level = obtained_items[index]
+            is_obtained = obtained_items[index]
+
+            item_rect = pygame.Rect(x, y, item_box_size, item_box_size)
+            pygame.draw.rect(screen, (100, 100, 100), item_rect)
+
+            tier = ITEM_TIER_LIST[index]
+            border_color = COLORS.get(tier, COLORS["common"])
+            pygame.draw.rect(screen, border_color, item_rect, 3)
+
+            item_image = pygame.transform.scale(ITEM_IMAGE_LIST[index], (item_box_size - 10, item_box_size - 10))
+            if not is_obtained:
+                item_image.set_alpha(100)
+            screen.blit(item_image, (x + 5, y + 5))
+
+            if is_obtained:
+                level_font = pygame.font.SysFont(None, 20)
+                level_text = level_font.render(f"{item_level}", True, (0, 0, 0))
+                screen.blit(level_text, (x + item_box_size - 20, y + item_box_size - 20))
+        
+        
+        
     def renderPausePage(self, screen: pygame.Surface):
         if self.show_instructions:
             self.render_instructions(screen)
@@ -171,6 +245,15 @@ class PlayState(BaseState):
         screen.blit(hint_text, hint_rect)
     
     def render(self, screen: pygame.Surface):
+        
+        if self.show_inventory:
+            self.renderInventoryItem(screen)
+            return 
+        if self.paused: 
+            self.renderPausePage(screen)
+            return None
+        
+        
         # World Render
         self.world.render(screen)
 
@@ -216,7 +299,7 @@ class PlayState(BaseState):
 
         # temp
         # self.room.render(screen)
-        if self.paused: self.renderPausePage(screen)
+        
             
 
     def Exit(self):
