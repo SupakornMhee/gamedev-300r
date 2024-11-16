@@ -23,7 +23,7 @@ class ResultState(BaseState):
         # Music settings
         self.music_loaded = False
         self.victory_music = "./sounds/300Victory.mp3"
-        self.defeat_music = "./sounds/Conan_sad_music.mp4"
+        self.defeat_music = "./sounds/Conan_sad_music.mp3"
         # เพิ่มส่วนของ Wave 9 video/audio
         self.xerxes_video = "./sounds/Xerxes-coming.mp4"
         self.xerxes_audio = "./sounds/Xerxes-coming.mp3"

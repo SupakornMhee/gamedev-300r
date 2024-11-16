@@ -18,9 +18,16 @@ from src.World import World
 
 class PlayState(BaseState):
     def __init__(self):
-        pass
+        self.music_loaded = False
 
     def Enter(self, params):
+        try:
+            pygame.mixer.music.load("./sounds/bangrajan.mp3")
+            pygame.mixer.music.set_volume(0.5)  # Set volume
+            pygame.mixer.music.play(-1)  # Loop indefinitely
+            self.music_loaded = True
+        except Exception as e:
+            print(f"Could not load music: {e}")
         self.paused = False
         self.paused_option = 0
         self.show_inventory = False
@@ -45,7 +52,10 @@ class PlayState(BaseState):
         )
         self.player.ChangeState("walk")
         
-    def getWinCondition(self) :
+    def getWinCondition(self):
+    # Check if there are no enemies left in the world
+        if self.world.countEnemies() == 0:
+            return True
         return None
     
     def getLoseCondition(self) :
@@ -303,4 +313,6 @@ class PlayState(BaseState):
             
 
     def Exit(self):
-        print("Exiting PlayState...")
+        if self.music_loaded:
+            pygame.mixer.music.fadeout(500)  # Fade out over 0.5 seconds
+            self.music_loaded = False

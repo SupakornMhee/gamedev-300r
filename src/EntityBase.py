@@ -4,6 +4,7 @@ from src.constants import *
 
 class EntityBase():
     def __init__(self, conf):
+        self.entity_type = conf.entity_type
         self.direction = 'right'
         self.direction_x = 'right'
         self.direction_y = 'down'
@@ -11,7 +12,7 @@ class EntityBase():
         self.idle_y = True
         self.animation_list = conf.animation
         self.attack = conf.attack
-
+        print(f"[DEBUG] {self.__class__.__name__} initialized with Attack={self.attack}.")
         # dims
         self.x = conf.x
         self.y = conf.y
@@ -37,7 +38,7 @@ class EntityBase():
 
         self.is_dead = False
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-
+        print(f"[DEBUG] EntityBase initialized: {self.rect} with health={self.health}, attack={self.attack}.")
         self.state_machine = None
         self.curr_animation = None
 
@@ -77,12 +78,12 @@ class EntityBase():
                    self.rect.y + self.height < target.rect.y or self.rect.y > target.rect.y + target.height)
 
     def Damage(self, dmg):
-        print(f"{self.__class__.__name__} takes {dmg} damage.")
+        print(f"Leonidas takes {dmg} damage.")
         self.health -= dmg
         if self.health <= 0:
             self.health = 0
             self.is_dead = True
-            print(f"{self.__class__.__name__} is dead.")
+            print("Leonidas is dead.")
 
     def Restore(self) :
         if self.health != self.init_health :

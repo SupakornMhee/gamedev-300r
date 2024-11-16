@@ -1,7 +1,7 @@
 from src.constants import *
 from src.recourses import *
 class EntityConf:
-    def __init__(self, animation, walk_speed=60, x=None, y=None, width=48, height=48, health=100, attack=10, offset_x=0, offset_y=0):
+    def __init__(self, animation, walk_speed=60, x=None, y=None, width=48, height=48, health=100, attack=10, offset_x=0, offset_y=0,entity_type="GeeGee"):
         
         self.animation = animation
         self.walk_speed = walk_speed
@@ -15,7 +15,7 @@ class EntityConf:
         self.health = health
         self.attack = attack
         
-        
+        self.entity_type = entity_type
         
         self.offset_x = offset_x
         self.offset_y = offset_y
