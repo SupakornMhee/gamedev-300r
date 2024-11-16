@@ -28,5 +28,6 @@ ENTITY_DEFS = {
     'geegee':EntityConf(animation=gGeeGee_animation_list, width=184*0.4, height=228*0.4, health=20),
 
     'xerxes':EntityConf(animation=gXerxes_animation_list, width=226*0.4, height=279*0.4, 
-                        health=100, attack=10, offset_x=0, offset_y=0)
+                        health=100, attack=10, offset_x=0, offset_y=0),
+    'loog_nong':EntityConf(animation=gLoog_nong_animation_list, width=229*0.4, height=400*0.4, health = 70, attack = 20, offset_x=0, offset_y=0)
 }
