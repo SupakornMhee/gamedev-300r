@@ -11,6 +11,7 @@ class Player(EntityBase):
         self.attack_boss = 5
         self.health_regen = 1
         self.world = None  # World reference for interaction with enemies
+    
     def get_stats(self) :
         return [
             self.health, 

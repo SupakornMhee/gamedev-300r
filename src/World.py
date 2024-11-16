@@ -56,7 +56,9 @@ class World:
             y=random.randrange(0, int(self.height) - int(ENTITY_DEFS[type].height)),
             width=ENTITY_DEFS[type].width,
             height=ENTITY_DEFS[type].height,
-            health=ENTITY_DEFS[type].health
+            health=ENTITY_DEFS[type].health,
+            attack=ENTITY_DEFS[type].attack,
+            entity_type=ENTITY_DEFS[type].entity_type
         )
 
             new_entity = EntityBase(conf)
@@ -67,6 +69,7 @@ class World:
             if any(new_entity.Collides(entity) for entity in self.entities):
                 continue
             print(f"Initialized GeeGee with {new_entity.attack} attack.")
+            print(f"Initialized GeeGee with {new_entity.health} health.")
             self.entities.append(new_entity)
             print(f"Placed GeeGee at ({new_entity.x}, {new_entity.y})")
             new_entity.state_machine = StateMachine()
@@ -74,7 +77,7 @@ class World:
             new_entity.state_machine.SetStates({
             "walk": EntityWalkState(new_entity),
             "idle": EntityIdleState(new_entity),
-            
+            "attack": EntityIdleState(new_entity),
         })
             new_entity.ChangeState("walk")
     def countEnemies(self):
