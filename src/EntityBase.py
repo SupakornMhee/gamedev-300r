@@ -1,5 +1,5 @@
 import pygame
-
+from src.constants import *
 
 
 class EntityBase():
@@ -55,12 +55,18 @@ class EntityBase():
             self.rect.y = self.y
 
     def MoveX(self, x):
-        self.x += x
-        self.rect.x = self.x
+        new_x = self.x + x
+        # self.rect.x = self.x
+        if 0 <= new_x <= WIDTH - self.width:
+            self.x = new_x
+            self.rect.x = self.x
 
     def MoveY(self, y):
-        self.y += y
-        self.rect.y = self.y
+        new_y = self.y + y
+    # Ensure the player stays within vertical boundaries
+        if 0 <= new_y <= HEIGHT - self.height:
+            self.y = new_y
+            self.rect.y = self.y
 
     def Collides(self, target):
         return not(self.rect.x + self.width < target.rect.x or self.rect.x > target.rect.x + target.width or
