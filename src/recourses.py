@@ -15,14 +15,10 @@ gFonts = {
     'Result': pygame.font.Font('fonts/Oregano-Italic.ttf',80)
 }
 
-gPlayer_animation_list = {"down": sprite_collection["character_walk_down"].animation,
-                         "right": sprite_collection["character_walk_right"].animation,
-                         "up": sprite_collection["character_walk_up"].animation,
-                         "left": sprite_collection["character_walk_left"].animation,
-                        "attack_down": sprite_collection["character_attack_down"].animation,
-                        "attack_right": sprite_collection["character_attack_right"].animation,
-                        "attack_up": sprite_collection["character_attack_up"].animation,
-                        "attack_left": sprite_collection["character_attack_left"].animation
+gPlayer_animation_list = {"right": sprite_collection["leonidas_walk_right"].animation,
+                         "left": sprite_collection["leonidas_walk_left"].animation,
+                        "attack_right": sprite_collection["leonidas_attack_right"].animation,
+                        "attack_left": sprite_collection["leonidas_attack_left"].animation
 }
 
 gGeeGee_animation_list = {"right": sprite_collection["geegee_walk_right"].animation,

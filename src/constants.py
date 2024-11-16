@@ -5,6 +5,8 @@ import pygame
 WIDTH = 1152 #1280
 HEIGHT = 648 #720
 
+MAP_RENDER_OFFSET_X = 0
+MAP_RENDER_OFFSET_Y = 0
 TILE_SIZE = 48
 
 PLAYER_WALK_SPEED = 180
@@ -81,16 +83,16 @@ def get_description_color(description: str):
     else:
         return (200, 200, 200)  # Default color 
 
-STATS_LABEL_LIST = {
-    "health": (255, 0, 0),
-    "attack_damage": (255, 69, 0),
-    "movement_speed": (0, 255, 255),
-    "attack_speed": (0, 255, 0),
-    "armor": (255, 255, 255),
-    "damage_reduction": (0, 0, 255),
-    "damage_against_bosses": (255, 140, 0),
-    "health_regenerate": (255, 0, 0),
-}
+STATS_LABEL_LIST = [
+    ("health", (255, 0, 0)),
+    ("attack_damage", (255, 69, 0)),
+    ("movement_speed", (0, 255, 255)),
+    ("attack_speed", (0, 255, 0)),
+    ("armor", (255, 255, 255)),
+    ("damage_reduction", (0, 0, 255)),
+    ("damage_against_bosses", (255, 140, 0)),
+    ("health_regenerate", (255, 0, 0))
+]
 
 def get_border_color(tier):
     return COLORS.get(tier, COLORS["common"])

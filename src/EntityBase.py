@@ -4,8 +4,13 @@ import pygame
 
 class EntityBase():
     def __init__(self, conf):
-        self.direction = 'down'
+        self.direction = 'right'
+        self.direction_x = 'right'
+        self.direction_y = 'down'
+        self.idle_x = True
+        self.idle_y = True
         self.animation_list = conf.animation
+        self.attack = conf.attack
 
         # dims
         self.x = conf.x

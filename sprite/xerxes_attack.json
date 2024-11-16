@@ -1,0 +1,66 @@
+{
+    "spriteSheetURL": "./graphics/xerxes.png",
+    "type":"animation",
+    "size":[405,300],
+    "sprites":[
+        {
+            "name":"loog_nong_attack_left",
+            "images":[
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":0,
+                    "y":300 ,
+                    "scale":1
+                },
+                {
+                    "x":0,
+                    "y":600,
+                    "scale":1
+                }
+
+            ],
+	       "idle_image":
+			{
+				"x":0,
+				"y":900,
+				"scale":1
+		     },
+            "interval_time":0.15,
+            "colorKey": null
+        },
+        {
+            "name":"loog_nong_attack_right",
+            "images":[
+                {
+                    "x":405,
+                    "y":0,
+                    "scale":1
+                },
+                {
+                    "x":405,
+                    "y":300,
+                    "scale":1
+                },
+                {
+                    "x":405,
+                    "y":300,
+                    "scale":1
+                }
+
+            ],
+	       "idle_image":
+			{
+				"x":0,
+				"y":900,
+				"scale":1
+		     },
+            "interval_time":0.15,
+            "colorKey": null
+        }
+]
+}
+

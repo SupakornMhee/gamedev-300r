@@ -21,7 +21,7 @@ class PlayState(BaseState):
         pass
 
     def Enter(self, params):
-        self.paused = True
+        self.paused = False
         self.paused_option = 0
         self.show_inventory = False
         self.show_instructions = False
@@ -30,27 +30,23 @@ class PlayState(BaseState):
         print("Entering Playstate...")
         # self.level = params['level']
         # ทำหน้าเข้าเกม
-        
-        
-        '''
         entity_conf = ENTITY_DEFS["player"]
         self.player = Player(entity_conf)
-        self.world = World(self.player)
+        self.world = World(self.wave_number,self.player)
 
         self.player.state_machine = StateMachine()
         self.player.state_machine.SetScreen(pygame.display.get_surface())
         self.player.state_machine.SetStates(
             {
-                "walk": PlayerWalkState(self.player, self.dungeon),
+                "walk": PlayerWalkState(self.player),
                 "idle": PlayerIdleState(self.player),
-                "swing_sword": PlayerAttackState(self.player, self.dungeon),
+                "swing_sword": PlayerAttackState(self.player),
             }
         )
-
         self.player.ChangeState("walk")
-        '''
+        
     def getWinCondition(self) :
-        return self.paused == False
+        return None
     
     def getLoseCondition(self) :
         return None
@@ -117,8 +113,9 @@ class PlayState(BaseState):
         if self.getLoseCondition() :
             params = {"wave_number": self.wave_number, "victory":False}
             g_state_manager.Change("result",params)
-        #self.World.update(dt, events)
-
+        
+        self.world.update(dt, events)
+        #print(self.player.x,self.player.y,self.player.direction)
         # if self.player.health == 0:
         #     g_state_manager.Change("game_over")
 
@@ -141,17 +138,15 @@ class PlayState(BaseState):
         screen.blit(name_text, (160, 50))
 
         stats_font = pygame.font.SysFont(None, 30)
-        stats = self.character_data["base_stats"]
         #draw_stat_labels(screen, stats_font, stats, 160, 100)
+        
         y_offset = 100
-        for stat_name, value in stats.items():
-            color = get_stat_color(stat_name)
+        for i,(stat_name, color) in enumerate(STATS_LABEL_LIST):
             label = stat_name.replace("_", " ").capitalize()
-            text = stats_font.render(f"{label}: {value}", True, color)
+            text = stats_font.render(f"{label}: {self.player.get_stats()[i]}", True, color)
             screen.blit(text, (160, y_offset))
             y_offset += 30
-        screen.blit(text, (160, 100))
-        
+
         
         self.renderInventoryItem(screen)
     
@@ -247,8 +242,9 @@ class PlayState(BaseState):
     def render(self, screen: pygame.Surface):
         
         if self.show_inventory:
-            self.renderInventoryItem(screen)
-            return 
+            self.renderInventoryPage(screen)
+            #self.renderInventoryItem(screen)
+            return None
         if self.paused: 
             self.renderPausePage(screen)
             return None

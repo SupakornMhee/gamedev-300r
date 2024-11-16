@@ -9,24 +9,24 @@
                 {
                     "x":0,
                     "y":0,
-                    "scale":1
+                    "scale":0.4
                 },
                 {
                     "x":184,
                     "y":0,
-                    "scale":1
+                    "scale":0.4
                 },
                 {
                     "x":368,
                     "y":0,
-                    "scale":1
+                    "scale":0.4
                 }
             ],
             "idle_image":
 			{
 				"x":0,
 				"y":0,
-				"scale":1
+				"scale":0.4
 		     },
 	 	    "loop":true,
             "interval_time":0.15,

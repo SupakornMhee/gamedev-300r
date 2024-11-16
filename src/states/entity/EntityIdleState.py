@@ -6,14 +6,14 @@ import random
 class EntityIdleState(BaseState):
     def __init__(self, entity):
         self.entity = entity
-        self.entity.ChangeAnimation(self.entity.direction)
+        self.entity.ChangeAnimation(self.entity.direction_x)
 
         # monster AI waiting
         self.wait_duration = 0
         self.wait_timer = 0
 
     def Enter(self, params):
-        self.entity.ChangeAnimation(self.entity.direction)
+        self.entity.ChangeAnimation(self.entity.direction_x)
 
     def Exit(self):
         pass
@@ -32,6 +32,6 @@ class EntityIdleState(BaseState):
 
     def render(self, screen):
         idle_image = self.entity.curr_animation.idleSprite
-
+        #print(idle_image)
         screen.blit(idle_image, (math.floor(self.entity.rect.x - self.entity.offset_x),
                     math.floor(self.entity.rect.y - self.entity.offset_y)))

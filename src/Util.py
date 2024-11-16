@@ -90,13 +90,18 @@ class SpriteManager:
     def __init__(self):
         self.spriteCollection = self.loadSprites(
             [
-                "./sprite/CharacterAnimation.json",
-                "./sprite/CharacterIdle.json",
-                "./sprite/CharacterAttack.json",
                 "./sprite/geegee_attack_left.json",
                 "./sprite/geegee_attack_right.json",
                 "./sprite/geegee_walk_left.json",
-                "./sprite/geegee_walk_right.json"
+                "./sprite/geegee_walk_right.json",
+                "./sprite/leonidas_attack_left.json",
+                "./sprite/leonidas_attack_right.json",
+                "./sprite/leonidas_walk_left.json",
+                "./sprite/leonidas_walk_right.json",
+                "./sprite/loog_nong_attack.json",
+                "./sprite/loog_nong_walk.json",
+                "./sprite/xerxes_attack.json",
+                "./sprite/xerxes_walk.json"
             ]
         )
 

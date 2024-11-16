@@ -1,31 +1,32 @@
 {
-    "spriteSheetURL": "./graphics/geegee_walk_right.png",
+    "spriteSheetURL": "./graphics/loog_nong.png",
     "type":"animation",
-    "size":[184,228],
+    "size":[229,400],
     "sprites":[
         {
-            "name":"geegee_walk_right",
+            "name":"loog_nong_walk",
             "images":[
                 {
                     "x":0,
                     "y":0,
-                    "scale":0.4
+                    "scale":1
                 },
                 {
-                    "x":184,
+                    "x":229,
                     "y":0,
-                    "scale":0.4
+                    "scale":1
                 }
+
             ],
-            "idle_image":
+	       "idle_image":
 			{
 				"x":0,
 				"y":0,
-				"scale":0.4
+				"scale":1
 		     },
-	 	    "loop":true,
             "interval_time":0.15,
             "colorKey": null
         }
 ]
 }
+

@@ -35,15 +35,26 @@ class World:
         
         self.entities = []
         #self.GenerateEntities()
-
+        
+        self.player = player
+        self.adjacent_offset_x = 0
+        self.adjacent_offset_y = 0
+        self.timer = 0
+        
     def GenerateEntities(self,level) :
         pass 
 
     def update(self, dt, events):
-        pass
+        self.timer += dt
+        #print(self.timer)
+        if self.adjacent_offset_x != 0 or self.adjacent_offset_y != 0:
+            return
+
+        self.player.update(dt, events)
 
     def render(self, screen: pygame.Surface):
         
         
         screen.blit(self.bg_image, (0,0))
+        self.player.render()
         pass

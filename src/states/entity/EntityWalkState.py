@@ -4,10 +4,9 @@ from src.states.BaseState import BaseState
 from src.constants import *
 
 class EntityWalkState(BaseState):
-    def __init__(self, entity, dungeon=None):
+    def __init__(self, entity):
         self.entity = entity
-        self.entity.ChangeAnimation('down')
-        self.dungeon = dungeon
+        self.entity.ChangeAnimation('right')
 
         #AI control
         self.move_duration = 0
@@ -18,34 +17,17 @@ class EntityWalkState(BaseState):
 
     def update(self, dt, events):
         self.bumped=False
-
-        if self.entity.direction == "left":
-            self.entity.MoveX(-self.entity.walk_speed*dt)
-            if self.entity.rect.x <= MAP_RENDER_OFFSET_X + TILE_SIZE:
-                #self.entity.rect.x = MAP_RENDER_OFFSET_X + TILE_SIZE
-                self.entity.ChangeCoord(x=MAP_RENDER_OFFSET_X + TILE_SIZE)
-                self.bumped=True
-        elif self.entity.direction == "right":
-            self.entity.MoveX(self.entity.walk_speed * dt)
-            if self.entity.rect.x + self.entity.width >= WIDTH - TILE_SIZE * 2:
-                #self.entity.rect.x = WIDTH - TILE_SIZE * 2 - self.entity.width
-                self.entity.ChangeCoord(x=WIDTH - TILE_SIZE * 2 - self.entity.width)
-                self.bumped=True
-
-        elif self.entity.direction == 'up':
-            self.entity.MoveY(-self.entity.walk_speed * dt)
-            if self.entity.rect.y <= MAP_RENDER_OFFSET_Y + TILE_SIZE - self.entity.height /2:
-                #self.entity.rect.y = MAP_RENDER_OFFSET_Y + TILE_SIZE - self.entity.height /2
-                self.entity.ChangeCoord(y=MAP_RENDER_OFFSET_Y + TILE_SIZE - self.entity.height /2)
-                self.bumped = True
-
-        elif self.entity.direction == 'down':
-            self.entity.MoveY(self.entity.walk_speed * dt)
-            bottom_edge = HEIGHT - (HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE
-            if self.entity.rect.y + self.entity.height >= bottom_edge:
-                #self.entity.rect.y = bottom_edge-self.entity.height
-                self.entity.ChangeCoord(y=bottom_edge-self.entity.height)
-                self.bumped=True
+        
+        if not self.entity.idle_x :
+            if self.entity.direction_x == "left":
+                self.entity.MoveX(-self.entity.walk_speed*dt)
+            elif self.entity.direction_x == "right":
+                self.entity.MoveX(self.entity.walk_speed * dt)
+        if not self.entity.idle_y :
+            if self.entity.direction_y == 'up':
+                self.entity.MoveY(-self.entity.walk_speed * dt)
+            elif self.entity.direction_y == 'down':
+                self.entity.MoveY(self.entity.walk_speed * dt)
 
         #print(self.entity.rect.x, self.entity.rect.y, self.entity.walk_speed*dt)
 
@@ -56,7 +38,9 @@ class EntityWalkState(BaseState):
 
     def ProcessAI(self, params, dt):
         directions = ['left', 'right', 'up', 'down']
-
+        player_x, player_y = params["player"]
+        
+        
         if self.move_duration == 0 or self.bumped:
             self.move_duration = random.randint(0, 5)
             self.entity.direction = random.choice(directions)

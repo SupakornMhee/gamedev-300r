@@ -1,36 +1,37 @@
 {
-    "spriteSheetURL": "./graphics/geegee_attack_right.png",
+    "spriteSheetURL": "./graphics/leonidas_attack_left.png",
     "type":"animation",
-    "size":[184,228],
+    "size":[350,373],
     "sprites":[
         {
-            "name":"geegee_attack_right",
+            "name":"leonidas_attack_left",
             "images":[
                 {
                     "x":0,
                     "y":0,
-                    "scale":0.4
+                    "scale":0.3
                 },
                 {
-                    "x":184,
+                    "x":700,
                     "y":0,
-                    "scale":0.4
+                    "scale":0.3
                 },
                 {
-                    "x":368,
+                    "x":350,
                     "y":0,
-                    "scale":0.4
+                    "scale":0.3
                 }
+
             ],
-            "idle_image":
+	       "idle_image":
 			{
 				"x":0,
 				"y":0,
-				"scale":0.4
+				"scale":0.3
 		     },
-	 	    "loop":true,
             "interval_time":0.15,
             "colorKey": null
         }
 ]
 }
+

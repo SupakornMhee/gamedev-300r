@@ -5,9 +5,23 @@ class Player(EntityBase):
     def __init__(self, conf):
         super(Player, self).__init__(conf)
         self.obtained_items = [0]*9 # แต่ละอัน มีทั้งหมด 9 อัน
-        self.
+        self.armor = 5
+        self.dmg_reduct = 0
+        self.attack_spd = 5
+        self.attack_boss = 5
+        self.health_regen = 1
 
-
+    def get_stats(self) :
+        return [
+            self.health, 
+            self.attack, 
+            self.walk_speed, 
+            self.attack_spd, 
+            self.armor, 
+            self.dmg_reduct,
+            self.attack_boss,
+            self.health_regen 
+        ]
 
     def update(self, dt, events):
         super().update(dt, events)

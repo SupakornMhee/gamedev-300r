@@ -42,7 +42,7 @@ class StartState(BaseState):
         
     def Enter(self, params):
         self.AssignVariable()
-        print(self.bg_image)
+        #print(self.bg_image)
 
     def update(self, dt, events):
         for event in events:
