@@ -17,7 +17,7 @@ class EntityBase():
         self.y = conf.y
         self.width = conf.width
         self.height = conf.height
-
+        
         # sprite offset          check
         self.offset_x = conf.offset_x or 0
         self.offset_y = conf.offset_y or 0
@@ -61,8 +61,10 @@ class EntityBase():
             self.x = new_x
             self.rect.x = self.x
     def Attack(self, target):
-        if target is not None:
+        if target and not target.invulnerable:
+            print(f"{self.__class__.__name__} attacking {target.__class__.__name__} with {self.attack} damage.")
             target.Damage(self.attack)
+            target.SetInvulnerable(0.5)
     def MoveY(self, y):
         new_y = self.y + y
     # Ensure the player stays within vertical boundaries
@@ -75,9 +77,12 @@ class EntityBase():
                    self.rect.y + self.height < target.rect.y or self.rect.y > target.rect.y + target.height)
 
     def Damage(self, dmg):
+        print(f"{self.__class__.__name__} takes {dmg} damage.")
         self.health -= dmg
         if self.health <= 0:
+            self.health = 0
             self.is_dead = True
+            print(f"{self.__class__.__name__} is dead.")
 
     def Restore(self) :
         if self.health != self.init_health :

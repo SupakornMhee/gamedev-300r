@@ -10,7 +10,7 @@ class Player(EntityBase):
         self.attack_spd = 5
         self.attack_boss = 5
         self.health_regen = 1
-
+        self.world = None  # World reference for interaction with enemies
     def get_stats(self) :
         return [
             self.health, 
@@ -25,7 +25,7 @@ class Player(EntityBase):
 
     def update(self, dt, events):
         super().update(dt, events)
-
+        self.health = min(self.init_health, self.health + self.health_regen * dt)
 
     def Collides(self, target):
         y, height = self.y + self.height/2, self.height-self.height/2

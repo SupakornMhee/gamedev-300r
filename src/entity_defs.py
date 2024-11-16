@@ -25,5 +25,5 @@ ENTITY_DEFS = {
     'player': EntityConf(animation=gPlayer_animation_list, walk_speed=PLAYER_WALK_SPEED,
                          x=WIDTH/2-24, y=HEIGHT/2 -33, width=350*0.3, height=373*0.3,
                           health=100, attack=10, offset_x=0, offset_y=0),
-    'geegee':EntityConf(animation=gGeeGee_animation_list, width=184*0.4, height=228*0.4, health=20)
+    'geegee': EntityConf(animation=gGeeGee_animation_list, width=184 * 0.4, height=228 * 0.4, health=20, attack=5)
 }

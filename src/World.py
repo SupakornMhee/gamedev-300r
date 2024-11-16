@@ -66,7 +66,7 @@ class World:
                     print(f"Collision detected with Entity at ({entity.x}, {entity.y})")
             if any(new_entity.Collides(entity) for entity in self.entities):
                 continue
-
+            print(f"Initialized GeeGee with {new_entity.attack} attack.")
             self.entities.append(new_entity)
             print(f"Placed GeeGee at ({new_entity.x}, {new_entity.y})")
             new_entity.state_machine = StateMachine()
@@ -74,6 +74,7 @@ class World:
             new_entity.state_machine.SetStates({
             "walk": EntityWalkState(new_entity),
             "idle": EntityIdleState(new_entity),
+            
         })
             new_entity.ChangeState("walk")
     def countEnemies(self):
@@ -86,12 +87,12 @@ class World:
 
         self.player.update(dt, events)
          # อัปเดตศัตรู
-        for entity in self.entities[:]:  # ใช้สำเนาเพื่อหลีกเลี่ยงข้อผิดพลาดขณะลบ
+        for entity in self.entities[:]:  # Use copy to avoid removal errors
+            
             if entity.is_dead:
                 self.entities.remove(entity)
             else:
-                entity.ProcessAI({"player": (self.player.x, self.player.y), "entities": self.entities}, dt)
-
+                entity.ProcessAI({"player": (self.player.x, self.player.y), "player_entity": self.player}, dt)
     def render(self, screen: pygame.Surface):
         
         

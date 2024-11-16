@@ -33,7 +33,7 @@ class PlayState(BaseState):
         entity_conf = ENTITY_DEFS["player"]
         self.player = Player(entity_conf)
         self.world = World(self.wave_number,self.player)
-
+        self.player.world = self.world
         self.player.state_machine = StateMachine()
         self.player.state_machine.SetScreen(pygame.display.get_surface())
         self.player.state_machine.SetStates(
@@ -49,7 +49,10 @@ class PlayState(BaseState):
         return None
     
     def getLoseCondition(self) :
-        return None
+        if self.player.health <= 0:
+            print("Player health is 0 or less. Lose condition met.")
+            return True
+        return False
 
     def update(self, dt, events):
         for event in events:
@@ -274,7 +277,7 @@ class PlayState(BaseState):
         screen.blit(enemy_text, enemy_rect)
 
         # Display health on the top right
-        health_text = enemy_font.render(f"Health: {health}", True, (255, 0, 0))  # Red color for text
+        health_text = enemy_font.render(f"Health: {self.player.health}", True, (255, 0, 0))  # Red color for text
         health_rect = health_text.get_rect(topright=(WIDTH - 20, 20))
         pygame.draw.rect(screen, (255, 255, 255), health_rect.inflate(10, 5))  # White background for visibility
         screen.blit(health_text, health_rect)
