@@ -105,6 +105,11 @@ class SpriteManager:
             ]
         )
 
+
+        # Debugging
+        print("Loaded Sprites:")
+        for key in self.spriteCollection.keys():
+            print(f"  {key}")
     def loadSprites(self, urlList, shrink_scale=1):
         resDict = {}
         for url in urlList:
