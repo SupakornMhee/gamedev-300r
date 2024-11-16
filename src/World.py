@@ -60,12 +60,15 @@ class World:
         )
 
             new_entity = EntityBase(conf)
-
+            print(f"Trying to place GeeGee at ({new_entity.x}, {new_entity.y})")
+            for entity in self.entities:
+                if new_entity.Collides(entity):
+                    print(f"Collision detected with Entity at ({entity.x}, {entity.y})")
             if any(new_entity.Collides(entity) for entity in self.entities):
                 continue
 
             self.entities.append(new_entity)
-
+            print(f"Placed GeeGee at ({new_entity.x}, {new_entity.y})")
             new_entity.state_machine = StateMachine()
             new_entity.state_machine.SetScreen(pygame.display.get_surface())
             new_entity.state_machine.SetStates({
@@ -73,6 +76,8 @@ class World:
             "idle": EntityIdleState(new_entity),
         })
             new_entity.ChangeState("walk")
+    def countEnemies(self):
+        return len(self.entities)
     def update(self, dt, events):
         self.timer += dt
         #print(self.timer)
@@ -80,6 +85,12 @@ class World:
             return
 
         self.player.update(dt, events)
+         # อัปเดตศัตรู
+        for entity in self.entities[:]:  # ใช้สำเนาเพื่อหลีกเลี่ยงข้อผิดพลาดขณะลบ
+            if entity.is_dead:
+                self.entities.remove(entity)
+            else:
+                entity.ProcessAI({"player": (self.player.x, self.player.y), "entities": self.entities}, dt)
 
     def render(self, screen: pygame.Surface):
         

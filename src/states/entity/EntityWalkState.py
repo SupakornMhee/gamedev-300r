@@ -37,25 +37,42 @@ class EntityWalkState(BaseState):
         pass
 
     def ProcessAI(self, params, dt):
-        directions = ['left', 'right', 'up', 'down']
+        # ตำแหน่งของผู้เล่น
         player_x, player_y = params["player"]
-        
-        
-        if self.move_duration == 0 or self.bumped:
-            self.move_duration = random.randint(0, 5)
-            self.entity.direction = random.choice(directions)
-            self.entity.ChangeAnimation(self.entity.direction)
+        other_entities = params.get("entities", [])
 
-        elif self.movement_timer > self.move_duration:
-            self.movement_timer = 0
-            if random.randint(0, 3) == 1:
-                self.entity.ChangeState('idle')
-            else:
-                self.move_duration = random.randint(0, 5)
-                self.entity.direction = random.choice(directions)
-                self.entity.ChangeAnimation(self.entity.direction)
+        # คำนวณทิศทางเข้าหาผู้เล่น
+        if self.entity.x < player_x:
+            self.entity.direction_x = 'right'
+        elif self.entity.x > player_x:
+            self.entity.direction_x = 'left'
 
-        self.movement_timer = self.movement_timer+dt
+        if self.entity.y < player_y:
+            self.entity.direction_y = 'down'
+        elif self.entity.y > player_y:
+            self.entity.direction_y = 'up'
+
+        # ตรวจสอบการชนก่อนเคลื่อนที่
+        if self.entity.direction_x == 'left' and not self.will_collide(-self.entity.walk_speed * dt, 0, other_entities):
+            self.entity.MoveX(-self.entity.walk_speed * dt)
+        elif self.entity.direction_x == 'right' and not self.will_collide(self.entity.walk_speed * dt, 0, other_entities):
+            self.entity.MoveX(self.entity.walk_speed * dt)
+
+        if self.entity.direction_y == 'up' and not self.will_collide(0, -self.entity.walk_speed * dt, other_entities):
+            self.entity.MoveY(-self.entity.walk_speed * dt)
+        elif self.entity.direction_y == 'down' and not self.will_collide(0, self.entity.walk_speed * dt, other_entities):
+            self.entity.MoveY(self.entity.walk_speed * dt)
+    def will_collide(self, dx, dy, other_entities):
+        # จำลองตำแหน่งใหม่
+        new_rect = self.entity.rect.copy()
+        new_rect.x += dx
+        new_rect.y += dy
+
+        # ตรวจสอบการชนกับ entity อื่น
+        for other in other_entities:
+            if other is not self.entity and new_rect.colliderect(other.rect):
+                return True
+        return False
 
 
     def render(self, screen):

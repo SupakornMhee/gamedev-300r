@@ -60,7 +60,9 @@ class EntityBase():
         if 0 <= new_x <= WIDTH - self.width:
             self.x = new_x
             self.rect.x = self.x
-
+    def Attack(self, target):
+        if target is not None:
+            target.Damage(self.attack)
     def MoveY(self, y):
         new_y = self.y + y
     # Ensure the player stays within vertical boundaries
@@ -74,6 +76,8 @@ class EntityBase():
 
     def Damage(self, dmg):
         self.health -= dmg
+        if self.health <= 0:
+            self.is_dead = True
 
     def Restore(self) :
         if self.health != self.init_health :

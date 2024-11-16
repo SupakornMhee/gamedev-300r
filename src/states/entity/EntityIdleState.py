@@ -23,12 +23,10 @@ class EntityIdleState(BaseState):
 
     def ProcessAI(self, params, dt):
         if self.wait_duration == 0:
-            self.wait_duration = random.randint(0, 5)
-        else:
-            self.wait_timer = self.wait_timer+dt
-
-            if self.wait_timer > self.wait_duration:
-                self.entity.ChangeState('walk')
+            self.wait_duration = random.randint(1, 3)
+        self.wait_timer += dt
+        if self.wait_timer >= self.wait_duration:
+            self.entity.ChangeState('walk')
 
     def render(self, screen):
         idle_image = self.entity.curr_animation.idleSprite

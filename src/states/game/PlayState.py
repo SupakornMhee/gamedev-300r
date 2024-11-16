@@ -262,10 +262,11 @@ class PlayState(BaseState):
         pygame.draw.rect(screen, (0, 0, 0), wave_rect.inflate(20, 10))  # Background rectangle for visibility
         screen.blit(wave_text, wave_rect)
         # Mock data for enemy count and health
-        enemy_count = 0  # Placeholder value for enemies
+        
         health = 100     # Placeholder value for health
 
         # Display enemy count on the top left
+        enemy_count = self.world.countEnemies()
         enemy_font = pygame.font.Font('./fonts/CooperMdBT-Regular.ttf', 30)
         enemy_text = enemy_font.render(f"Enemies: {enemy_count}", True, (0, 0, 0))  # Black color for text
         enemy_rect = enemy_text.get_rect(topleft=(20, 20))
