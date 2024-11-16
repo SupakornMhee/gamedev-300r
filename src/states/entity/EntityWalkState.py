@@ -6,7 +6,11 @@ from src.constants import *
 class EntityWalkState(BaseState):
     def __init__(self, entity):
         self.entity = entity
-        self.entity.ChangeAnimation('right')
+        # Use "walk" if "right" does not exist
+        if "right" in self.entity.animation_list:
+            self.entity.ChangeAnimation("right")
+        else:
+            self.entity.ChangeAnimation("walk")
 
         #AI control
         self.move_duration = 0
