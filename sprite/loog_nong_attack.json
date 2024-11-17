@@ -23,12 +23,12 @@
                 }
 
             ],
-	       "idle_image":
-			{
-				"x":0,
-				"y":0,
-				"scale":1
-		     },
+       "idle_image":
+{
+"x":0,
+"y":400,
+"scale":1
+     },
             "interval_time":0.15,
             "colorKey": null
         },
@@ -46,21 +46,20 @@
                     "scale":1
                 },
                 {
-                    "x":580,
+                    "x":0,
                     "y":800,
                     "scale":1
                 }
 
             ],
-	       "idle_image":
-			{
-				"x":0,
-				"y":0,
-				"scale":1
-		     },
+       "idle_image":
+{
+"x":590,
+"y":800,
+"scale":1
+     },
             "interval_time":0.15,
             "colorKey": null
         }
 ]
 }
-

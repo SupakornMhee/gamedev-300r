@@ -48,7 +48,7 @@ class GameMain:
 
         
         init_state = "play"
-        params = {"wave_number":1}
+        params = {"wave_number":10}
         g_state_manager.Change(init_state,params)
         
         
