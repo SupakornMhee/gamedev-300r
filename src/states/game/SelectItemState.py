@@ -135,7 +135,7 @@ class SelectItemState(BaseState) :
                 line_y = y_pos + 200 + i * 20
                 screen.blit(line_surface, (line_x, line_y))
 
-            current_level = self.obtained_items[k]
+            current_level = self.items[k]
             next_level = min(current_level + 1, 3)
             level_text = desc_font.render(f"Level: {current_level} -> {next_level}" if current_level else f"Level: {current_level+1}", True, (255, 255, 255))
             level_text_rect = level_text.get_rect(center=(item_frame_rect.centerx, y_pos + item_box_height - 40))

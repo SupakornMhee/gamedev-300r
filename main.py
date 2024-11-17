@@ -48,7 +48,7 @@ class GameMain:
 
         
         init_state = "play"
-        params = {"wave_number":10}
+        params = {"wave_number":1}
         g_state_manager.Change(init_state,params)
         
         
@@ -63,7 +63,6 @@ class GameMain:
 
             self.screen.fill((0, 0, 0))
             g_state_manager.render()
-
             pygame.display.update()
 
 

@@ -22,13 +22,17 @@ class EntityConf:
 
 
 ENTITY_DEFS = {
-    'player': EntityConf(animation=gPlayer_animation_list, walk_speed=70,
+    'player': EntityConf(animation=gPlayer_animation_list, walk_speed=90,
                          x=WIDTH/2-24, y=HEIGHT/2 -33, width=350*0.3, height=373*0.3,
                           health=1000, attack=10, offset_x=0, offset_y=0),
+    
     'geegee':EntityConf(animation=gGeeGee_animation_list, walk_speed=40, 
-                        width=184*0.4, height=228*0.4, health=20),
+                        health=20, attack=10,
+                        width=184*0.4, height=228*0.4),
 
     'xerxes':EntityConf(animation=gXerxes_animation_list, width=226*0.4, height=279*0.4, 
                         health=100, attack=10, offset_x=0, offset_y=0,entity_type="xerxes"),
-    'loog_nong':EntityConf(animation=gLoog_nong_animation_list, width=229*0.4, height=400*0.4, health = 20, attack = 20, offset_x=0, offset_y=0,entity_type="loog_nong")
+    
+    'loog_nong':EntityConf(animation=gLoog_nong_animation_list, width=229*0.4, height=400*0.4,
+                        health = 70, attack = 20, offset_x=0, offset_y=0,entity_type="loog_nong")
 }

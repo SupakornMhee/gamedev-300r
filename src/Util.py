@@ -105,7 +105,6 @@ class SpriteManager:
             ]
         )
 
-
         # Debugging
         print("Loaded Sprites:")
         for key in self.spriteCollection.keys():
