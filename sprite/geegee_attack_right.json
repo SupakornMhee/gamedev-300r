@@ -28,8 +28,7 @@
 				"y":0,
 				"scale":0.4
 		     },
-	 	    "loop":true,
-            "interval_time":0.15,
+            "interval_time":0.3,
             "colorKey": null
         }
 ]

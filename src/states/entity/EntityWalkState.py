@@ -2,16 +2,15 @@ import random
 
 from src.states.BaseState import BaseState
 from src.constants import *
+from src.HitBox import Hitbox
+from src.EntityBase import EntityBase
+from src.player import Player
 
 class EntityWalkState(BaseState):
     def __init__(self, entity):
-        self.entity = entity
-        # Use "walk" if "right" does not exist
-        if "right" in self.entity.animation_list:
-            self.entity.ChangeAnimation("right")
-        else:
-            self.entity.ChangeAnimation("walk")
-
+        self.entity: EntityBase = entity
+        self.entity.ChangeAnimation("right")
+        
         #AI control
         self.move_duration = 0
         self.movement_timer = 0
@@ -26,19 +25,15 @@ class EntityWalkState(BaseState):
             if self.entity.direction_x == "left":
                 self.entity.MoveX(-self.entity.walk_speed*dt)
                 self.entity.ChangeAnimation("left")
-                self.last_horizontal_direction = "left"
             elif self.entity.direction_x == "right":
                 self.entity.MoveX(self.entity.walk_speed * dt)
                 self.entity.ChangeAnimation("right")
-                self.last_horizontal_direction = "right"
         if not self.entity.idle_y :
             if self.entity.direction_y == 'up':
                 self.entity.MoveY(-self.entity.walk_speed * dt)
-                self.entity.ChangeAnimation(f"{self.last_horizontal_direction}")
             elif self.entity.direction_y == 'down':
                 self.entity.MoveY(self.entity.walk_speed * dt)
-                self.entity.ChangeAnimation(f"{self.last_horizontal_direction}")
-
+        #print(self.entity.direction_x)
         #print(self.entity.rect.x, self.entity.rect.y, self.entity.walk_speed*dt)
 
     def Enter(self, params):
@@ -46,35 +41,48 @@ class EntityWalkState(BaseState):
     def Exit(self):
         pass
 
-    def ProcessAI(self, params, dt):
+    def ProcessAI(self, params, dt):    
+        if self.entity.cooldown < 0:
+            self.entity.able_to_attack = True
+        else :
+            self.entity.cooldown -= dt
+        #print(self.entity.cooldown)
         player_x, player_y = params["player"]
-        player_entity = params["player_entity"]
+        player_entity:Player = params["player_entity"]
         self.entity.target = player_entity  # Set target for attack
-
+        
     # Check proximity to player for attack
-        distance_x = abs(self.entity.x - player_x)
-        distance_y = abs(self.entity.y - player_y)
+        #distance_x = abs(self.entity.x - player_x)
+        #distance_y = abs(self.entity.y - player_y)
 
-        if distance_x < 50 and distance_y < 50:  # Example attack range
-            self.entity.ChangeState("attack")
+        if player_entity.Collides(self.entity.GetHitBox()) :
+            if self.entity.able_to_attack: #cooldown able to attack
+                self.entity.ChangeState("attack")
+                self.entity.cooldown = 0.5 # 0.5 s
+                self.entity.able_to_attack = False
+                player_entity.Damage(self.entity.attack)
         else:
         # Move towards player
             if self.entity.x < player_x:
                 self.entity.direction_x = "right"
+                self.entity.ChangeAnimation("right")
+                self.entity.MoveX(self.entity.walk_speed*dt)
             elif self.entity.x > player_x:
                 self.entity.direction_x = "left"
+                self.entity.ChangeAnimation("left")
+                self.entity.MoveX(-self.entity.walk_speed*dt)
 
             if self.entity.y < player_y:
                 self.entity.direction_y = "down"
+                self.entity.MoveY(self.entity.walk_speed * dt)
             elif self.entity.y > player_y:
                 self.entity.direction_y = "up"
+                self.entity.MoveY(-self.entity.walk_speed * dt)
 
-            self.entity.MoveX(self.entity.walk_speed * dt if self.entity.direction_x == "right" else -self.entity.walk_speed * dt)
-            self.entity.MoveY(self.entity.walk_speed * dt if self.entity.direction_y == "down" else -self.entity.walk_speed * dt)
-        if abs(self.entity.x - player_x) < 50 and abs(self.entity.y - player_y) < 50:
-            self.entity.Attack(player_entity)
-   
-
+            
+        # if abs(self.entity.x - player_x) < 50 and abs(self.entity.y - player_y) < 50:
+        #     self.entity.Attack(player_entity)
+            
     def render(self, screen):
         animation = self.entity.curr_animation.image
 

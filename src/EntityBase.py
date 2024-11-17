@@ -1,6 +1,6 @@
 import pygame
 from src.constants import *
-
+from src.HitBox import Hitbox
 
 class EntityBase():
     def __init__(self, conf):
@@ -12,7 +12,7 @@ class EntityBase():
         self.idle_y = True
         self.animation_list = conf.animation
         self.attack = conf.attack
-        print(f"[DEBUG] {self.__class__.__name__} initialized with Attack={self.attack}.")
+        #print(f"[DEBUG] {self.__class__.__name__} initialized with Attack={self.attack}.")
         # dims
         self.x = conf.x
         self.y = conf.y
@@ -41,8 +41,22 @@ class EntityBase():
         print(f"[DEBUG] EntityBase initialized: {self.rect} with health={self.health}, attack={self.attack}.")
         self.state_machine = None
         self.curr_animation = None
+        
+        self.cooldown = 0
+        self.able_to_attack = True
+        
+    def GetHitBox(self) :
+        if self.direction_x == 'left':
+            hitbox_x = self.x - (self.width * 0.7)  # Adjust hitbox for left attack
+            hitbox_y = self.y
+        elif self.direction_x == 'right':
+            hitbox_x = self.x + self.width  # Adjust hitbox for right attack
+            hitbox_y = self.y
+        else:  # Default case
+            hitbox_x = self.x
+            hitbox_y = self.y
 
-
+        return Hitbox(hitbox_x, hitbox_y, self.width * 0.7, self.height)
     def CreateAnimations(self):
         pass
 

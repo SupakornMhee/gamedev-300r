@@ -5,7 +5,7 @@ from src.HitBox import Hitbox
 import pygame
 from src.recourses import *
 from src.entity_defs import *
-from src.EntityBase import EntityBase
+
 class PlayerAttackState(BaseState):
     def __init__(self, player):
         self.player = player
@@ -40,11 +40,10 @@ class PlayerAttackState(BaseState):
 
         # Check collisions with GeeGee entities
         for entity in self.player.world.entities:
-            entity:EntityBase
             if entity.entity_type == "GeeGee":  # Check if the entity is GeeGee
                 if entity.Collides(self.sword_hitbox):
                     print(f"[DEBUG] Leonidas hit GeeGee at ({entity.x}, {entity.y}).")
-                    entity.Damage(self.player.attack)
+                    entity.health -= self.player.attack
                     print(f"[DEBUG] GeeGee health: {entity.health}")
 
                     if entity.health <= 0:

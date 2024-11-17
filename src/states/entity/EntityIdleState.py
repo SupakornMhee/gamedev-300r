@@ -5,11 +5,7 @@ import random
 class EntityIdleState(BaseState):
     def __init__(self, entity):
         self.entity = entity
-        # Check if direction_x animation exists, fallback to "walk"
-        if self.entity.direction_x in self.entity.animation_list:
-            self.entity.ChangeAnimation(self.entity.direction_x)
-        else:
-            self.entity.ChangeAnimation("walk")  # Default to "walk" for Xerxes
+        self.entity.ChangeAnimation(self.entity.direction_x)
 
         # Monster AI waiting
         self.wait_duration = 0

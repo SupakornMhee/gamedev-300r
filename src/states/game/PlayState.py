@@ -14,20 +14,21 @@ from src.StateMachine import StateMachine
 
 # from src.world.Dungeon import Dungeon
 from src.World import World
-
+from math import floor
 
 class PlayState(BaseState):
     def __init__(self):
         self.music_loaded = False
 
     def Enter(self, params):
-        try:
-            pygame.mixer.music.load("./sounds/bangrajan.mp3")
-            pygame.mixer.music.set_volume(0.5)  # Set volume
-            pygame.mixer.music.play(-1)  # Loop indefinitely
-            self.music_loaded = True
-        except Exception as e:
-            print(f"Could not load music: {e}")
+        
+        # try:
+        #     pygame.mixer.music.load("./sounds/bangrajan.mp3")
+        #     pygame.mixer.music.set_volume(0.5)  # Set volume
+        #     pygame.mixer.music.play(-1)  # Loop indefinitely
+        #     self.music_loaded = True
+        # except Exception as e:
+        #     print(f"Could not load music: {e}")
         self.paused = False
         self.paused_option = 0
         self.show_inventory = False
@@ -56,7 +57,7 @@ class PlayState(BaseState):
     # Check if there are no enemies left in the world
         if self.world.countEnemies() == 0:
             return True
-        return None
+        return False
     
     def getLoseCondition(self) :
         if self.player.health <= 0:
@@ -287,7 +288,7 @@ class PlayState(BaseState):
         screen.blit(enemy_text, enemy_rect)
 
         # Display health on the top right
-        health_text = enemy_font.render(f"Health: {self.player.health}", True, (255, 0, 0))  # Red color for text
+        health_text = enemy_font.render(f"Health: {floor(self.player.health)}", True, (255, 0, 0))  # Red color for text
         health_rect = health_text.get_rect(topright=(WIDTH - 20, 20))
         pygame.draw.rect(screen, (255, 255, 255), health_rect.inflate(10, 5))  # White background for visibility
         screen.blit(health_text, health_rect)

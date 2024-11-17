@@ -1,6 +1,6 @@
 from src.EntityBase import EntityBase
 from src.Dependencies import *
-
+from src.recourses import gPlayer_animation_list
 class Player(EntityBase):
     def __init__(self, conf):
         super(Player, self).__init__(conf)
