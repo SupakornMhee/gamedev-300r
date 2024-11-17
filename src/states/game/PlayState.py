@@ -53,6 +53,7 @@ class PlayState(BaseState):
             }
         )
         self.player.ChangeState("walk")
+        print("Health of player",self.player.health)
         
     def getWinCondition(self):
     # Check if there are no enemies left in the world
@@ -278,7 +279,7 @@ class PlayState(BaseState):
         screen.blit(wave_text, wave_rect)
         # Mock data for enemy count and health
         
-        health = 100     # Placeholder value for health
+        # health = 100     # Placeholder value for health
 
         # Display enemy count on the top left
         enemy_left = self.world.level_data["monsters"] - self.world.monsters_spawned + self.world.countEnemies() 

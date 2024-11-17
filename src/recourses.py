@@ -29,8 +29,8 @@ gGeeGee_animation_list = {"right": sprite_collection["geegee_walk_right"].animat
 
 gXerxes_animation_list = {"left": sprite_collection["xerxes_walk"].animation,
                           "right": sprite_collection["xerxes_walk"].animation,
-                        "attack_right": sprite_collection["loog_nong_attack_right"].animation,
-                        "attack_left": sprite_collection["loog_nong_attack_left"].animation
+                        "attack_right": sprite_collection["xerxes_attack_right"].animation,
+                        "attack_left": sprite_collection["xerxes_attack_left"].animation
 }
 gLoog_nong_animation_list = {"right": sprite_collection["loog_nong_walk"].animation,
                          "left": sprite_collection["loog_nong_walk"].animation,
