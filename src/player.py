@@ -4,6 +4,8 @@ from src.recourses import gPlayer_animation_list
 class Player(EntityBase):
     def __init__(self, conf, items=[0]*9):
         super(Player, self).__init__(conf)
+        #self.health = conf["health"]
+        
         self.items = items # แต่ละอัน มีทั้งหมด 9 อัน
         self.armor = 0
         self.dmg_reduct = 0
@@ -19,8 +21,10 @@ class Player(EntityBase):
         # {"name": "Ring of Midas", "description": "+10% Damage against bosses", "tier": "legendary"},
         # {"name": "Amulet of Athena", "description": "+0.5/s Health regenerate", "tier": "legendary"},
         # {"name": "Cape of the Phantom", "description": "+5% Damage reduction", "tier": "legendary"}
-        self.armor += 3*self.items[3] + 1*self.items[4]
-        self.health += 5*self.items[2]
+        self.armor += 1*self.items[3] + 3*self.items[4]
+        self.init_health += 10*self.items[2]
+        self.health = self.init_health
+        print(self.health,self.items[2])
         self.attack *= 1+0.04*self.items[0]; self.attack += 2*self.items[5]
         self.health_regen += 0.5*self.items[7]
         self.attack_boss += 0.10*self.items[6]
@@ -30,7 +34,7 @@ class Player(EntityBase):
     
     def get_stats(self) :
         return [
-            self.health, 
+            self.init_health, 
             self.attack, 
             self.walk_speed, 
             self.armor, 

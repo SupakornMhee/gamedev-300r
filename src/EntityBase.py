@@ -25,8 +25,9 @@ class EntityBase():
 
         self.walk_speed = conf.walk_speed
 
-        self.health = conf.health
+        
         self.init_health = conf.health
+        self.health = self.init_health
         
         #invincible
         self.invulnerable = False
