@@ -47,7 +47,7 @@ class EntityBase():
         
     def GetHitBox(self) :
         if self.direction_x == 'left':
-            hitbox_x = self.x - (self.width * 0.7)  # Adjust hitbox for left attack
+            hitbox_x = self.x - (self.width * 0.4)  # Adjust hitbox for left attack
             hitbox_y = self.y
         elif self.direction_x == 'right':
             hitbox_x = self.x + self.width  # Adjust hitbox for right attack
@@ -56,7 +56,7 @@ class EntityBase():
             hitbox_x = self.x
             hitbox_y = self.y
 
-        return Hitbox(hitbox_x, hitbox_y, self.width * 0.7, self.height)
+        return Hitbox(hitbox_x, hitbox_y, self.width * 0.4, self.height)
     def CreateAnimations(self):
         pass
 

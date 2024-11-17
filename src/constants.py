@@ -41,11 +41,11 @@ for idx, rect in enumerate(item_rects):
         ITEM_IMAGE_LIST.append(None)
 
 ITEM_DESC_FULL = [
-    {"name": "Sword of Leonidas", "description": "+4% Attack Damage", "tier": "common"},
+    {"name": "Sword of Leonidas", "description": "+5% Attack Damage", "tier": "common"},
     {"name": "Hermes's boots", "description": "+2% Movement Speed", "tier": "common"},
-    {"name": "Armor of King Dream", "description": "+5 Health", "tier": "uncommon"},
-    {"name": "Shield of Sparta", "description": "+2 Armor", "tier": "common"},
-    {"name": "Helm of Hercules", "description": "+5 Armor", "tier": "uncommon"},
+    {"name": "Armor of King Dream", "description": "+10 Health", "tier": "uncommon"},
+    {"name": "Shield of Sparta", "description": "+1 Armor", "tier": "common"},
+    {"name": "Helm of Hercules", "description": "+3 Armor", "tier": "uncommon"},
     {"name": "Mark's Gauntlet", "description": "+2 Attack Damage", "tier": "common"},
     {"name": "Ring of Midas", "description": "+10% Damage against bosses", "tier": "legendary"},
     {"name": "Amulet of Athena", "description": "+0.5/s Health regenerate", "tier": "legendary"},
@@ -87,7 +87,6 @@ STATS_LABEL_LIST = [
     ("health", (255, 0, 0)),
     ("attack_damage", (255, 69, 0)),
     ("movement_speed", (0, 255, 255)),
-    ("attack_speed", (0, 255, 0)),
     ("armor", (255, 255, 255)),
     ("damage_reduction", (0, 0, 255)),
     ("damage_against_bosses", (255, 140, 0)),
@@ -101,21 +100,6 @@ def draw_bordered_rect(screen, rect, color, border_color, border_width=3):
     pygame.draw.rect(screen, border_color, rect, border_width)
     inner_rect = rect.inflate(-border_width * 2, -border_width * 2)
     pygame.draw.rect(screen, color, inner_rect)
-
-def get_stat_color(stat_name):
-    """Get the color associated with a stat name."""
-    return STAT_LABELS.get(stat_name, (255, 255, 255))  # Default to white if not found
-
-def draw_stat_labels(screen, font, stats, start_x, start_y, line_height=30):
-    """Draws stat labels on the screen with appropriate colors."""
-    y_offset = start_y
-    for stat_name, value in stats.items():
-        color = get_stat_color(stat_name)
-        label = stat_name.replace("_", " ").capitalize()
-        text = font.render(f"{label}: {value}", True, color)
-        screen.blit(text, (start_x, y_offset))
-        y_offset += line_height
-
 
 
 

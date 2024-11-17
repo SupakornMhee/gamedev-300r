@@ -63,7 +63,6 @@ class GameMain:
 
             self.screen.fill((0, 0, 0))
             g_state_manager.render()
-
             pygame.display.update()
 
 

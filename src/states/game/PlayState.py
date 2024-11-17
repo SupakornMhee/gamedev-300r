@@ -56,7 +56,7 @@ class PlayState(BaseState):
         
     def getWinCondition(self):
     # Check if there are no enemies left in the world
-        if self.world.countEnemies() == 0:
+        if self.world.level_data["monsters"] - self.world.monsters_spawned + self.world.countEnemies()  == 0:
             return True
         return False
     
@@ -267,7 +267,7 @@ class PlayState(BaseState):
         
         # World Render
         self.world.render(screen)
-
+        #print(self.player.x,self.player.y)
         # ใส่ stats ต่างๆ ภายในเกม ตรงด้านบนจอ
         # Ex. Health, Enemy Remaining, etc.
         # Display the wave number at the top center of the screen
@@ -281,9 +281,9 @@ class PlayState(BaseState):
         health = 100     # Placeholder value for health
 
         # Display enemy count on the top left
-        enemy_count = self.world.countEnemies()
+        enemy_left = self.world.level_data["monsters"] - self.world.monsters_spawned + self.world.countEnemies() 
         enemy_font = pygame.font.Font('./fonts/CooperMdBT-Regular.ttf', 30)
-        enemy_text = enemy_font.render(f"Enemies: {enemy_count}", True, (0, 0, 0))  # Black color for text
+        enemy_text = enemy_font.render(f"Enemies: {enemy_left}", True, (0, 0, 0))  # Black color for text
         enemy_rect = enemy_text.get_rect(topleft=(20, 20))
         pygame.draw.rect(screen, (255, 255, 255), enemy_rect.inflate(10, 5))  # White background for visibility
         screen.blit(enemy_text, enemy_rect)

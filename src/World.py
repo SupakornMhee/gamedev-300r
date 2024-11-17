@@ -41,7 +41,7 @@ class World:
         self.timer = 0
         self.remaining_time = self.level_data['duration']  # Duration for the level
         self.monsters_spawned = 0  # Track number of monsters spawned
-
+        self.monsters_remained = 0
         # Spawn a portion of enemies immediately
         self.initial_spawn()
 
@@ -68,7 +68,7 @@ class World:
             conf = ENTITY_DEFS["geegee"]
             conf.x = random.randrange(0, int(self.width) - int(conf.width))
             conf.y = random.randrange(0, int(self.height) - int(conf.height))
-            
+            print(conf.x,conf.y)
             new_entity = self.create_entity(conf)
             if not any(new_entity.Collides(entity) for entity in self.entities):
                 self.entities.append(new_entity)
@@ -91,7 +91,7 @@ class World:
     def GenerateEntities(self, dt):
         """Spawn monsters progressively based on the level configuration."""
         self.spawn_timer += dt  # Increment timer
-
+        #print(self.spawn_timer)
         # Spawn regular monsters at random intervals
         if (self.spawn_timer >= self.level_data['duration'] / self.level_data['monsters'] and
                 self.monsters_spawned < self.level_data['monsters']):
@@ -99,7 +99,11 @@ class World:
             conf = ENTITY_DEFS["geegee"]
             conf.x = random.randrange(0, int(self.width) - int(conf.width))
             conf.y = random.randrange(0, int(self.height) - int(conf.height))
-            
+            choice = random.choice([1,2,3,4])
+            if choice == 1: conf.x = 0 # ขอบบน
+            if choice == 2: conf.x = int(self.width) - int(conf.width) #ขอบล่าง
+            if choice == 3: conf.y = 0 #ขอบซ้าย
+            if choice == 4: conf.y = int(self.height) - int(conf.height) #ขอบขวา
             new_entity = self.create_entity(conf)
             if not any(new_entity.Collides(entity) for entity in self.entities):
                 self.entities.append(new_entity)
