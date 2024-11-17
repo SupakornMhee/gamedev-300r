@@ -11,6 +11,7 @@ class PlayerAttackState(BaseState):
         self.player = player
         
     def Enter(self, params=None):
+        self.take_damage = True
         # Setup sword hitbox based on player direction
         if self.player.direction_x == 'left':
             hitbox_x = self.player.x - (self.player.width * 0.7)  # Adjust hitbox for left attack
@@ -42,9 +43,10 @@ class PlayerAttackState(BaseState):
         for entity in self.player.world.entities:
             entity:EntityBase
             if entity.entity_type == "GeeGee":  # Check if the entity is GeeGee
-                if entity.Collides(self.sword_hitbox):
+                if entity.Collides(self.sword_hitbox) and self.take_damage:
                     print(f"[DEBUG] Leonidas hit GeeGee at ({entity.x}, {entity.y}).")
                     entity.Damage(self.player.attack)
+                    self.take_damage = False
                     print(f"[DEBUG] GeeGee health: {entity.health}")
 
                     if entity.health <= 0:
