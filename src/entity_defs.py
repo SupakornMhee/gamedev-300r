@@ -22,10 +22,10 @@ class EntityConf:
 
 
 ENTITY_DEFS = {
-    'player': EntityConf(animation=gPlayer_animation_list, walk_speed=PLAYER_WALK_SPEED,
+    'player': EntityConf(animation=gPlayer_animation_list, walk_speed=70,
                          x=WIDTH/2-24, y=HEIGHT/2 -33, width=350*0.3, height=373*0.3,
                           health=100, attack=10, offset_x=0, offset_y=0),
-    'geegee':EntityConf(animation=gGeeGee_animation_list, walk_speed=PLAYER_WALK_SPEED-(PLAYER_WALK_SPEED-10), 
+    'geegee':EntityConf(animation=gGeeGee_animation_list, walk_speed=40, 
                         width=184*0.4, height=228*0.4, health=20),
 
     'xerxes':EntityConf(animation=gXerxes_animation_list, width=226*0.4, height=279*0.4, 
