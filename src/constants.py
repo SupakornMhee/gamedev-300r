@@ -44,9 +44,9 @@ ITEM_DESC_FULL = [
     {"name": "Sword of Leonidas", "description": "+4% Attack Damage", "tier": "common"},
     {"name": "Hermes's boots", "description": "+2% Movement Speed", "tier": "common"},
     {"name": "Armor of King Dream", "description": "+5 Health", "tier": "uncommon"},
-    {"name": "Shield of Sparta", "description": "+5 Armor", "tier": "common"},
-    {"name": "Helm of Hercules", "description": "+2 Armor", "tier": "uncommon"},
-    {"name": "Mark's Gauntlet", "description": "+2% Attack Speed", "tier": "common"},
+    {"name": "Shield of Sparta", "description": "+2 Armor", "tier": "common"},
+    {"name": "Helm of Hercules", "description": "+5 Armor", "tier": "uncommon"},
+    {"name": "Mark's Gauntlet", "description": "+2 Attack Damage", "tier": "common"},
     {"name": "Ring of Midas", "description": "+10% Damage against bosses", "tier": "legendary"},
     {"name": "Amulet of Athena", "description": "+0.5/s Health regenerate", "tier": "legendary"},
     {"name": "Cape of the Phantom", "description": "+5% Damage reduction", "tier": "legendary"}

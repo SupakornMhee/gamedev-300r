@@ -85,7 +85,7 @@ class StoryState(BaseState):
             # Check if 5 seconds have passed
             if pygame.time.get_ticks() - self.instruction_start_time >= 5000:
                 # After 5 seconds, change to the next state (e.g., 'main_menu' or game start)
-                g_state_manager.Change('load')  # You can replace this with the state you want
+                g_state_manager.Change('load',{"items":[0]*9})  # You can replace this with the state you want
             return
 
         for event in events:

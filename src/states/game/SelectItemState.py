@@ -21,8 +21,7 @@ class SelectItemState(BaseState) :
         self.wave_number = params.get("wave_number", 5)
         self.option = 0
         self.item_option = self.getRandomItem()
-        self.obtained_items = [0]*9
-        pass
+        self.items = params.get("items", [0]*9)
     
     def getRandomItem(self) :
         selection = []
@@ -58,8 +57,9 @@ class SelectItemState(BaseState) :
                     print("You choose", ITEM_NAME_LIST[self.item_option[self.option]])
                     #self.player.upgrade(self.item_option[self.option])
                     #self.obtained_items[self.item_option[self.option]] += 1
+                    self.items[self.item_option[self.option]] += 1
                     # go to load next state
-                    g_state_manager.Change('load', {'wave_number': self.wave_number + 1})
+                    g_state_manager.Change('load', {'wave_number': self.wave_number + 1, "items":self.items})
                     
 
     

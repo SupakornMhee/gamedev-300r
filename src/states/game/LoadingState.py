@@ -51,6 +51,7 @@ class LoadingState(BaseState):
             params = {}
         # รับค่า wave_number จาก params เหมือน ResultState
         self.current_wave = params.get("wave_number", 1)
+        self.items = params.get("items", [0]*9)
         self.title_start_time = pygame.time.get_ticks()
         
         pygame.mixer.music.load(self.loading_song)
@@ -84,9 +85,9 @@ class LoadingState(BaseState):
 
             if self.text_opacity == 0:
                 # เปลี่ยนเป็นส่งค่า wave_number ไปยัง PlayState
-                g_state_manager.Change('play', {'wave_number': self.current_wave})
+                g_state_manager.Change('play', {'wave_number': self.current_wave, "items": self.items})
 
-    def render(self, screen):
+    def render(self, screen:pygame.Surface):
         screen.fill((0, 0, 0))
         self.render_dust_effect(screen)
 

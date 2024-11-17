@@ -132,6 +132,7 @@ class ResultState(BaseState):
         self.wave1_sequence_start_time = None
         self.show_choice = False
         self.title_animation_progress = -800
+        self.items = params.get("items", [0]*9)
 
         # Load video for Wave 5 victory
         if self.victory and self.wave_number == 5:
@@ -252,7 +253,7 @@ class ResultState(BaseState):
                         if event.key == pygame.K_y:  # Submit to Xerxes
                             g_state_manager.Change('start')
                         else:  # Continue fighting
-                            g_state_manager.Change('select', {'wave_number': self.wave_number})
+                            g_state_manager.Change('select', {'wave_number': self.wave_number, "items":self.items})
                 # Regular return key handler - only for defeat cases
                 elif event.key == pygame.K_RETURN and not self.victory:
                     pygame.mixer.music.fadeout(500)
@@ -272,7 +273,7 @@ class ResultState(BaseState):
                 if self.victory and self.wave_number == 5 and self.show_video:
                     pygame.mixer.music.stop()
                     self.sparta_music_playing = False
-                    g_state_manager.Change('select', {'wave_number': self.wave_number})
+                    g_state_manager.Change('select', {'wave_number': self.wave_number, "items":self.items})
                 elif self.victory and self.wave_number == 4 and self.show_messenger_video:
                     self.show_messenger_video = False
                     self.show_choice = True
@@ -281,7 +282,7 @@ class ResultState(BaseState):
                 elif self.victory and self.wave_number == 9 and self.show_xerxes_video:
                     pygame.mixer.music.stop()
                     self.xerxes_music_playing = False
-                    g_state_manager.Change('select', {'wave_number': self.wave_number})
+                    g_state_manager.Change('select', {'wave_number': self.wave_number, "items":self.items})
         else:
             self.skip_start_time = None
 
@@ -308,7 +309,7 @@ class ResultState(BaseState):
                     if self.wave1_sequence_index >= len(self.special_victory_sequence_wave1):
                         pygame.mixer.music.fadeout(500)
                         self.music_loaded = False
-                        g_state_manager.Change('select', {'wave_number': self.wave_number})
+                        g_state_manager.Change('select', {'wave_number': self.wave_number, "items":self.items})
 
         # Special handling for Wave 5 victory sequence
         elif self.victory and self.wave_number == 5:
@@ -334,7 +335,7 @@ class ResultState(BaseState):
                 if video_time >= self.video_clip.duration:
                     pygame.mixer.music.stop()  # หยุดเพลงก่อนเปลี่ยน state
                     self.sparta_music_playing = False
-                    g_state_manager.Change('select', {'wave_number': self.wave_number})
+                    g_state_manager.Change('select', {'wave_number': self.wave_number, "items":self.items})
 
         # Special handling for Wave 4 victory sequence
         elif self.victory and self.wave_number == 4:
@@ -403,7 +404,7 @@ class ResultState(BaseState):
                 if video_time >= self.xerxes_clip.duration:
                     pygame.mixer.music.stop()
                     self.xerxes_music_playing = False
-                    g_state_manager.Change('select', {'wave_number': self.wave_number})
+                    g_state_manager.Change('select', {'wave_number': self.wave_number, "items":self.items})
         
         # Regular victory message timing
         elif self.victory:
@@ -415,7 +416,7 @@ class ResultState(BaseState):
             elif time_elapsed > self.title_duration + self.message_duration:
                 pygame.mixer.music.fadeout(500)
                 self.music_loaded = False
-                g_state_manager.Change('select', {'wave_number': self.wave_number})
+                g_state_manager.Change('select', {'wave_number': self.wave_number, "items":self.items})
                 
         # Regular defeat message timing
         else:
@@ -463,7 +464,7 @@ class ResultState(BaseState):
                 except Exception as e:
                     print(f"Error rendering video frame: {e}")
                     self.show_video = False
-                    g_state_manager.Change('select', {'wave_number': self.wave_number})
+                    g_state_manager.Change('select', {'wave_number': self.wave_number, "items":self.items})
             else:
                 # Regular rendering for pre-video sequence
                 screen.fill(self.background_color)
@@ -567,7 +568,7 @@ class ResultState(BaseState):
                 except Exception as e:
                     print(f"Error rendering Xerxes video frame: {e}")
                     self.show_xerxes_video = False
-                    g_state_manager.Change('select', {'wave_number': self.wave_number})
+                    g_state_manager.Change('select', {'wave_number': self.wave_number, "items":self.items})
             else:
                 screen.fill(self.background_color)
                 if self.show_title:

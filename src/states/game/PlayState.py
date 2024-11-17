@@ -34,12 +34,13 @@ class PlayState(BaseState):
         self.show_inventory = False
         self.show_instructions = False
         self.wave_number = params.get("wave_number", 1)
-        self.world = World(self.wave_number, None)
+        self.world = World(self.wave_number, None)  
+        self.items = params.get("items", [0]*9)
         print("Entering Playstate...")
         # self.level = params['level']
         # ทำหน้าเข้าเกม
         entity_conf = ENTITY_DEFS["player"]
-        self.player = Player(entity_conf)
+        self.player = Player(entity_conf,self.items)
         self.world = World(self.wave_number,self.player)
         self.player.world = self.world
         self.player.state_machine = StateMachine()
@@ -122,10 +123,10 @@ class PlayState(BaseState):
             if self.wave_number == 10:
                 g_state_manager.Change("lastvictory")
             else :
-                params = {"wave_number": self.wave_number, "victory":True}
+                params = {"wave_number": self.wave_number, "victory":True, "items":self.items}
                 g_state_manager.Change("result",params)
         if self.getLoseCondition() :
-            params = {"wave_number": self.wave_number, "victory":False}
+            params = {"wave_number": self.wave_number, "victory":False, "items":self.items}
             g_state_manager.Change("result",params)
         
         self.world.update(dt, events)
@@ -171,7 +172,7 @@ class PlayState(BaseState):
         start_y = 50
         columns = 3
 
-        obtained_items = [0,3,0,0,1,0,0,0,2] # แต่ละอัน มีทั้งหมด 9 อัน
+        obtained_items = self.items # แต่ละอัน มีทั้งหมด 9 อัน
         
         for index in range(9):
             col = index % columns
