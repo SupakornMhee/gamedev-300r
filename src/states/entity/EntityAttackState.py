@@ -12,6 +12,27 @@ class EntityAttackState(BaseState):
         self.attack_timer = 0
 
     def Enter(self, params):
+        if self.entity.height>140 : #xerxes 150
+            if self.entity.direction_x == 'left':
+                self.entity.offset_x = 0
+                self.entity.offset_y = 0
+            if self.entity.direction_x == 'right':
+                self.entity.offset_x = 0
+                self.entity.offset_y = 0
+        elif self.entity.height>110 : #loognong
+            if self.entity.direction_x == 'left':
+                self.entity.offset_x = 9.15
+                self.entity.offset_y = 0
+            if self.entity.direction_x == 'right':
+                self.entity.offset_x = 9.15
+                self.entity.offset_y = 0
+        else :
+            self.entity.offset_x = 0
+            self.entity.offset_y = 0
+        
+        
+        
+        
         #direction = self.entity.direction_x
         #self.entity.ChangeAnimation(f"attack_{direction}")
         self.attack_timer = 0  # Reset attack timer
@@ -39,7 +60,6 @@ class EntityAttackState(BaseState):
         pass
     
     def ProcessAI(self, params, dt): 
-        self.entity.ChangeState("walk")
         self.attack_timer += dt
         if self.entity.curr_animation.times_played > 0:
             self.entity.curr_animation.times_played = 0
@@ -55,7 +75,8 @@ class EntityAttackState(BaseState):
             
     def render(self, screen):
         animation = self.entity.curr_animation.image
-        screen.blit(animation, (self.entity.x, self.entity.y))
+        screen.blit(animation, (math.floor(self.entity.x - self.entity.offset_x),
+                    math.floor(self.entity.y - self.entity.offset_y)))
         
         pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(
             self.sword_hitbox.x, self.sword_hitbox.y, self.sword_hitbox.width, self.sword_hitbox.height

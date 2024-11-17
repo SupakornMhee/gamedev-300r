@@ -12,6 +12,8 @@ class EntityIdleState(BaseState):
         self.wait_timer = 0
 
     def Enter(self, params):
+        self.entity.offset_x = 0
+        self.entity.offset_y = 0
         # Check if direction_x animation exists, fallback to "walk"
         if self.entity.direction_x in self.entity.animation_list:
             self.entity.ChangeAnimation(self.entity.direction_x)

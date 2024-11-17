@@ -28,7 +28,7 @@
 				"y":0,
 				"scale":0.4
 		     },
-            "interval_time":0.3,
+            "interval_time":0.15,
             "colorKey": null
         }
 ]

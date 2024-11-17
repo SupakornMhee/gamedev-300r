@@ -34,7 +34,7 @@ class World:
     def get_level_data(self):
         """Define level-specific configurations."""
         level_config = [
-            {"monsters": 10, "duration": 20, "boss": "xerxes"},
+            {"monsters": 5, "duration": 20, "boss": "xerxes"},
             {"monsters": 15, "duration": 30, "boss": None},
             {"monsters": 20, "duration": 40, "boss": None},
             {"monsters": 25, "duration": 50, "boss": None},
@@ -133,6 +133,7 @@ class World:
                 self.entities.remove(entity)
             else:
                 entity.ProcessAI({"player": (self.player.x, self.player.y), "player_entity": self.player}, dt)
+                
 
     def render(self, screen: pygame.Surface):
         """Render the world and its entities."""

@@ -12,31 +12,11 @@ class PlayerWalkState(EntityWalkState):
         pass
 
     def Enter(self, params):
-        self.entity.offset_y = 15
+        self.entity.offset_y = 0
         self.entity.offset_x = 0
 
     def update(self, dt, events):
         pressedKeys = pygame.key.get_pressed()
-        
-        # if pressedKeys[pygame.K_a]:
-        #     self.entity.direction = 'left'
-        #     self.entity.direction_x = 'left'
-        #     self.entity.ChangeAnimation('left')
-        # elif pressedKeys[pygame.K_d]:
-        #     self.entity.direction = 'right'
-        #     self.entity.direction_x = 'right'
-        #     self.entity.ChangeAnimation('right')
-        # elif pressedKeys[pygame.K_s]:
-        #     self.entity.direction = 'down'
-        #     self.entity.direction_y = 'down'
-        #     #self.entity.ChangeAnimation('down')
-        # elif pressedKeys[pygame.K_w]:
-        #     self.entity.direction = 'up'
-        #     self.entity.direction_y = 'up'
-        #     #self.entity.ChangeAnimation('up')
-        # else:
-        #     self.entity.ChangeState('idle')
-            
         
         if pressedKeys[pygame.K_a]:
             self.entity.idle_x = False

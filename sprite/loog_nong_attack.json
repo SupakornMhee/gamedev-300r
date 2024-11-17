@@ -9,26 +9,26 @@
                 {
                     "x":0,
                     "y":400,
-                    "scale":1
+                    "scale":0.3
                 },
                 {
                     "x":290,
                     "y":400,
-                    "scale":1
+                    "scale":0.3
                 },
                 {
                     "x":580,
                     "y":400,
-                    "scale":1
+                    "scale":0.3
                 }
 
             ],
-       "idle_image":
-{
-"x":0,
-"y":400,
-"scale":1
-     },
+            "idle_image":
+            {
+                "x":0,
+                "y":400,
+                "scale":0.3
+            },
             "interval_time":0.15,
             "colorKey": null
         },
@@ -38,26 +38,26 @@
                 {
                     "x":580,
                     "y":800,
-                    "scale":1
+                    "scale":0.3
                 },
                 {
                     "x":290,
                     "y":800,
-                    "scale":1
+                    "scale":0.3
                 },
                 {
                     "x":0,
                     "y":800,
-                    "scale":1
+                    "scale":0.3
                 }
 
             ],
-       "idle_image":
-{
-"x":590,
-"y":800,
-"scale":1
-     },
+            "idle_image":
+            {
+                "x":590,
+                "y":800,
+                "scale":0.3
+            },
             "interval_time":0.15,
             "colorKey": null
         }

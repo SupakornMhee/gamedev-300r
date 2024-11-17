@@ -6,11 +6,14 @@ import pygame
 from src.recourses import *
 from src.entity_defs import *
 from src.EntityBase import EntityBase
+from src.player import Player
 class PlayerAttackState(BaseState):
     def __init__(self, player):
-        self.player = player
+        self.player: Player = player
         
     def Enter(self, params=None):
+        self.player.offset_x = 0
+        self.player.offset_y = 0
         self.take_damage = True
         # Setup sword hitbox based on player direction
         if self.player.direction_x == 'left':
@@ -33,6 +36,7 @@ class PlayerAttackState(BaseState):
         pass
 
     def update(self, dt, events):
+        
         # Return to idle state after attack animation finishes
         if self.player.curr_animation.times_played > 0:
             self.player.curr_animation.times_played = 0
@@ -61,7 +65,7 @@ class PlayerAttackState(BaseState):
     def render(self, screen):
         # Render the player animation
         animation = self.player.curr_animation.image
-        screen.blit(animation, (math.floor(self.player.x), math.floor(self.player.y)))
+        screen.blit(animation, (math.floor(self.player.x - self.player.offset_x), math.floor(self.player.y - self.player.offset_y)))
 
         # Draw sword hitbox for debugging
         pygame.draw.rect(screen, (255, 0, 255), pygame.Rect(

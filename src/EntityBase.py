@@ -132,6 +132,9 @@ class EntityBase():
 
     def ProcessAI(self, params, dt):
         self.state_machine.ProcessAI(params, dt)
+        
+        if self.curr_animation:
+            self.curr_animation.update(dt)
 
     def render(self, adjacent_offset_x=0, adjacent_offset_y=0):
         if self.invulnerable and self.flash_timer > 0.06:

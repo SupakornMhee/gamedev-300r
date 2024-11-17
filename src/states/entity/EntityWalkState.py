@@ -19,25 +19,26 @@ class EntityWalkState(BaseState):
         self.bumped = False
 
     def update(self, dt, events):
-        self.bumped=False
-        
-        if not self.entity.idle_x :
-            if self.entity.direction_x == "left":
-                self.entity.MoveX(-self.entity.walk_speed*dt)
-                self.entity.ChangeAnimation("left")
-            elif self.entity.direction_x == "right":
-                self.entity.MoveX(self.entity.walk_speed * dt)
-                self.entity.ChangeAnimation("right")
-        if not self.entity.idle_y :
-            if self.entity.direction_y == 'up':
-                self.entity.MoveY(-self.entity.walk_speed * dt)
-            elif self.entity.direction_y == 'down':
-                self.entity.MoveY(self.entity.walk_speed * dt)
-        #print(self.entity.direction_x)
-        #print(self.entity.rect.x, self.entity.rect.y, self.entity.walk_speed*dt)
+            self.bumped=False
+            
+            if not self.entity.idle_x :
+                if self.entity.direction_x == "left":
+                    self.entity.MoveX(-self.entity.walk_speed*dt)
+                    self.entity.ChangeAnimation("left")
+                elif self.entity.direction_x == "right":
+                    self.entity.MoveX(self.entity.walk_speed * dt)
+                    self.entity.ChangeAnimation("right")
+            if not self.entity.idle_y :
+                if self.entity.direction_y == 'up':
+                    self.entity.MoveY(-self.entity.walk_speed * dt)
+                elif self.entity.direction_y == 'down':
+                    self.entity.MoveY(self.entity.walk_speed * dt)
+            #print(self.entity.direction_x)
+            #print(self.entity.rect.x, self.entity.rect.y, self.entity.walk_speed*dt)
 
     def Enter(self, params):
-        pass
+        self.entity.offset_x = 0
+        self.entity.offset_y = 0
     def Exit(self):
         pass
 

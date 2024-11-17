@@ -30,9 +30,9 @@ ENTITY_DEFS = {
                         health=20, attack=10,
                         width=184*0.4, height=228*0.4),
 
-    'xerxes':EntityConf(animation=gXerxes_animation_list, width=226*0.4, height=279*0.4, 
+    'xerxes':EntityConf(animation=gXerxes_animation_list, width=226*0.4, height=300*0.4, 
                         health=100, attack=10, offset_x=0, offset_y=0,entity_type="xerxes"),
     
-    'loog_nong':EntityConf(animation=gLoog_nong_animation_list, width=229*0.4, height=400*0.4,
+    'loog_nong':EntityConf(animation=gLoog_nong_animation_list, width=229*0.5, height=400*0.5,
                         health = 70, attack = 20, offset_x=0, offset_y=0,entity_type="loog_nong")
 }
