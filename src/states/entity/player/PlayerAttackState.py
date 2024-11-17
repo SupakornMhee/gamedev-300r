@@ -56,6 +56,26 @@ class PlayerAttackState(BaseState):
                     if entity.health <= 0:
                         print(f"[DEBUG] GeeGee at ({entity.x}, {entity.y}) is dead.")
                         self.player.world.entities.remove(entity)
+            elif entity.entity_type == "loog_nong":
+                if entity.Collides(self.sword_hitbox) and self.take_damage:
+                    print(f"[DEBUG] Leonidas hit Loog_Nong at ({entity.x}, {entity.y}).")
+                    entity.Damage(self.player.attack)
+                    self.take_damage = False
+                    print(f"[DEBUG] Loog_Nong health: {entity.health}")
+                    if entity.health <= 0:
+                        print(f"[DEBUG] Loog_Nong at ({entity.x}, {entity.y}) is dead.")
+                        self.player.world.entities.remove(entity)
+
+        # Collision logic for GeeGee
+            elif entity.entity_type == "xerxes":
+                if entity.Collides(self.sword_hitbox) and self.take_damage:
+                    print(f"[DEBUG] Leonidas hit Xerxes at ({entity.x}, {entity.y}).")
+                    entity.Damage(self.player.attack)
+                    self.take_damage = False
+                    print(f"[DEBUG] Xerxes health: {entity.health}")
+                    if entity.health <= 0:
+                        print(f"[DEBUG] Xerxes at ({entity.x}, {entity.y}) is dead.")
+                        self.player.world.entities.remove(entity)
 
         # Handle attack input
         for event in events:
@@ -71,3 +91,4 @@ class PlayerAttackState(BaseState):
         pygame.draw.rect(screen, (255, 0, 255), pygame.Rect(
             self.sword_hitbox.x, self.sword_hitbox.y, self.sword_hitbox.width, self.sword_hitbox.height
         ))
+        
