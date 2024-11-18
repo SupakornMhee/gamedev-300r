@@ -47,8 +47,8 @@ class GameMain:
         clock = pygame.time.Clock()
 
         
-        init_state = "play"
-        params = {"wave_number":10}
+        init_state = "start"
+        params = {"wave_number":1}
         g_state_manager.Change(init_state,params)
         
         
