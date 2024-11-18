@@ -72,8 +72,8 @@ class World:
         """Create and initialize an entity with a state machine."""
         new_entity = EntityBase(conf)
         if conf.entity_type == "GeeGee":
-            wave_multiplier = 1 + (0.02 * (self.wave_number - 1))  # เพิ่ม 2% ต่อ wave
-            new_entity.health = int(conf.health * wave_multiplier)
+            wave_multiplier = 1 + (0.015 * (self.wave_number - 1))  
+            new_entity.health = conf.health * wave_multiplier
             new_entity.attack = conf.attack * wave_multiplier
             print(f"[DEBUG] Wave {self.wave_number} GeeGee stats:")
             print(f"[DEBUG] - Base health: {conf.health} -> Scaled: {new_entity.health}")

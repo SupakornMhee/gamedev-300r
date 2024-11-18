@@ -59,7 +59,12 @@ class SelectItemState(BaseState) :
                     print("You choose", ITEM_NAME_LIST[self.item_option[self.option]])
                     #self.player.upgrade(self.item_option[self.option])
                     #self.obtained_items[self.item_option[self.option]] += 1
-                    self.items[self.item_option[self.option]] += 1
+                    selected_item = self.item_option[self.option]
+                    if self.items[selected_item] < 3:  # Ensure the item count does not exceed the limit
+                        self.items[selected_item] += 1
+                        print(f"Selected item {ITEM_NAME_LIST[selected_item]} upgraded to level {self.items[selected_item]}")
+                    else:
+                        print(f"Item {ITEM_NAME_LIST[selected_item]} is already at max level!")
                     # go to load next state
                     params = {
             'wave_number': self.wave_number+1,
