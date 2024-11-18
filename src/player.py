@@ -27,7 +27,7 @@ class Player(EntityBase):
         print(self.health,self.items[2])
         self.attack *= 1+0.05*self.items[0]; self.attack += 3*self.items[5]
         self.health_regen += 0.5*self.items[7]
-        self.attack_boss += 0.10*self.items[6] ; self.attack_boss += 3*self.items[5]; self.attack_boss *= 1+0.04*self.items[0];
+        self.attack_boss += (1+0.10*self.items[6]) ; self.attack_boss += 3*self.items[5]; self.attack_boss *= 1+0.04*self.items[0];
         self.walk_speed *= (1+0.05*self.items[1])
         self.dmg_reduct += 5*self.items[8]
         self.world = None  # World reference for interaction with enemies
