@@ -37,8 +37,8 @@ class World:
     def get_level_data(self):
         """Define level-specific configurations."""
         level_config = [
-            {"monsters": 5, "duration": 15, "boss": "loog_nong"},
-            {"monsters": 10, "duration": 20, "boss": "loog_nong"},
+            {"monsters": 5, "duration": 15, "boss": None},
+            {"monsters": 10, "duration": 20, "boss": None},
             {"monsters": 15, "duration": 25, "boss": None},
             {"monsters": 20, "duration": 30, "boss": None},
             {"monsters": 25, "duration": 40, "boss": "loog_nong"},
