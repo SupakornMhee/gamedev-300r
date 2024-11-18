@@ -1,8 +1,3 @@
-'''
-code นี้เป็นการทดสอบ play state เท่านั้น 
-เปิดเกมมา จะไปโผล่ที่ game state เลย
-'''
-
 import pygame, math, random, sys, os
 from src.constants import *
 
@@ -13,22 +8,15 @@ music_channel.set_volume(0.2)
 
 from src.Dependencies import *
 from src.recourses import *
-# import src.tween.tween as tween
+
 
 class GameMain:
     def __init__(self):
         self.max_frame_rate = 60
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-        #self.sprite_collection = SpriteManager().spriteCollection
-
-        #self.g_state_manager = StateMachine(self.screen)
         g_state_manager.SetScreen(self.screen)
         
         states = {
-            # 'start': StartState(),
-            
-            # 'game_over': GameOverState(),
             'start' : StartState(),
             'story_1' : StoryState(),
             'play': PlayState(),
@@ -43,7 +31,6 @@ class GameMain:
 
 
     def PlayGame(self):
-        # gSounds['music'].play(-1)
         clock = pygame.time.Clock()
 
         
@@ -59,7 +46,6 @@ class GameMain:
             events = pygame.event.get()
 
             g_state_manager.update(dt, events)
-            #tween.update(dt)
 
             self.screen.fill((0, 0, 0))
             g_state_manager.render()
