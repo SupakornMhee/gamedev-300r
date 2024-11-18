@@ -13,11 +13,11 @@ class Player(EntityBase):
         self.attack_boss = self.attack
         self.health_regen = 1
         # {"name": "Sword of Leonidas", "description": "+5% Attack Damage", "tier": "common"},
-        # {"name": "Hermes's boots", "description": "+2% Movement Speed", "tier": "common"},
+        # {"name": "Hermes's boots", "description": "+5% Movement Speed", "tier": "common"},
         # {"name": "Armor of King Dream", "description": "+10 Health", "tier": "uncommon"},
-        # {"name": "Shield of Sparta", "description": "+1 Armor", "tier": "common"},
-        # {"name": "Helm of Hercules", "description": "+3 Armor", "tier": "uncommon"},
-        # {"name": "Mark's Gauntlet", "description": "+2 Attack Damage", "tier": "common"},
+        # {"name": "Shield of Sparta", "description": "+5 Armor", "tier": "common"},
+        # {"name": "Helm of Hercules", "description": "+10 Armor", "tier": "uncommon"},
+        # {"name": "Mark's Gauntlet", "description": "+3 Attack Damage", "tier": "uncommon"},
         # {"name": "Ring of Midas", "description": "+10% Damage against bosses", "tier": "legendary"},
         # {"name": "Amulet of Athena", "description": "+0.5/s Health regenerate", "tier": "legendary"},
         # {"name": "Cape of the Phantom", "description": "+5% Damage reduction", "tier": "legendary"}
@@ -25,7 +25,7 @@ class Player(EntityBase):
         self.init_health += 10*self.items[2]
         self.health = self.init_health
         print(self.health,self.items[2])
-        self.attack *= 1+0.04*self.items[0]; self.attack += 3*self.items[5]
+        self.attack *= 1+0.05*self.items[0]; self.attack += 3*self.items[5]
         self.health_regen += 0.5*self.items[7]
         self.attack_boss += 0.10*self.items[6] ; self.attack_boss += 3*self.items[5]; self.attack_boss *= 1+0.04*self.items[0];
         self.walk_speed *= (1+0.05*self.items[1])

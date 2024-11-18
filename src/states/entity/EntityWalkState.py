@@ -61,7 +61,14 @@ class EntityWalkState(BaseState):
                 self.entity.ChangeState("attack")
                 self.entity.cooldown = 0.5 # 0.5 s
                 self.entity.able_to_attack = False
-                player_entity.Damage(self.entity.attack*(1-0.05*player_entity.dmg_reduct) - player_entity.armor)
+                all_damage = self.entity.attack*(1-0.01*player_entity.dmg_reduct)
+                if player_entity.armor == 0:
+                    player_entity.Damage(all_damage)
+                elif all_damage < player_entity.armor :
+                    player_entity.armor -= all_damage
+                else :
+                    player_entity.armor = 0
+                    player_entity.Damage(self.entity.attack*(1-0.01*player_entity.dmg_reduct) - player_entity.armor)
                 
         else:
         # Move towards player
