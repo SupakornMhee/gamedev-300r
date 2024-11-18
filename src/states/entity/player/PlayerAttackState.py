@@ -92,7 +92,7 @@ class PlayerAttackState(BaseState):
         screen.blit(animation, (math.floor(self.player.x - self.player.offset_x), math.floor(self.player.y - self.player.offset_y)))
 
         # Draw sword hitbox for debugging
-        pygame.draw.rect(screen, (255, 0, 255), pygame.Rect(
-            self.sword_hitbox.x, self.sword_hitbox.y, self.sword_hitbox.width, self.sword_hitbox.height
-        ))
+        # pygame.draw.rect(screen, (255, 0, 255), pygame.Rect(
+        #     self.sword_hitbox.x, self.sword_hitbox.y, self.sword_hitbox.width, self.sword_hitbox.height
+        # ))
         

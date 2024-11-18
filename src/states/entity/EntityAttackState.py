@@ -42,7 +42,7 @@ class EntityAttackState(BaseState):
                 hitbox_x = self.entity.x - (self.entity.width * 0.4)  # Wider hitbox for left-facing attack
                 hitbox_y = self.entity.y
             elif self.entity.direction_x == 'right':
-                hitbox_x = self.entity.x + self.entity.width*2  # Wider hitbox for right-facing attack
+                hitbox_x = self.entity.x + self.entity.width*1.7  # Wider hitbox for right-facing attack
                 hitbox_y = self.entity.y
             else:  # Default case
                 hitbox_x = self.entity.x
@@ -53,10 +53,10 @@ class EntityAttackState(BaseState):
     # LoogNong-specific hitbox
         elif self.entity.entity_type == "loog_nong":
             if self.entity.direction_x == 'left':
-                hitbox_x = self.entity.x - (self.entity.width * 0.4)  # Narrower hitbox for left-facing attack
+                hitbox_x = self.entity.x - (self.entity.width * 0.3)  # Narrower hitbox for left-facing attack
                 hitbox_y = self.entity.y
             elif self.entity.direction_x == 'right':
-                hitbox_x = self.entity.x + (self.entity.width * 0.7)   # Narrower hitbox for right-facing attack
+                hitbox_x = self.entity.x + (self.entity.width * 0.2)   # Narrower hitbox for right-facing attack
                 hitbox_y = self.entity.y
             else:  # Default case
                 hitbox_x = self.entity.x
@@ -126,6 +126,6 @@ class EntityAttackState(BaseState):
         screen.blit(animation, (math.floor(self.entity.x - self.entity.offset_x),
                     math.floor(self.entity.y - self.entity.offset_y)))
         
-        pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(
-            self.sword_hitbox.x, self.sword_hitbox.y, self.sword_hitbox.width, self.sword_hitbox.height
-        ))
+        # pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(
+        #     self.sword_hitbox.x, self.sword_hitbox.y, self.sword_hitbox.width, self.sword_hitbox.height
+        # ))

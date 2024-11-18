@@ -65,7 +65,7 @@ class EntityWalkState(BaseState):
                 if player_entity.armor == 0:
                     player_entity.Damage(all_damage)
                 elif all_damage/2 < player_entity.armor :
-                    player_entity.armor -= all_damage
+                    player_entity.armor -= all_damage/2
                     player_entity.Damage(all_damage/2)
                 else :
                     player_entity.armor = 0
