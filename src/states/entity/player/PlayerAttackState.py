@@ -61,7 +61,7 @@ class PlayerAttackState(BaseState):
             elif entity.entity_type == "loog_nong":
                 if entity.Collides(self.sword_hitbox) and self.take_damage:
                     print(f"[DEBUG] Leonidas hit Loog_Nong at ({entity.x}, {entity.y}).")
-                    entity.Damage(self.player.attack)
+                    entity.Damage(self.player.attack_boss)
                     self.take_damage = False
                     print(f"[DEBUG] Loog_Nong health: {entity.health}")
                     self.hit_sound.play()
@@ -73,7 +73,7 @@ class PlayerAttackState(BaseState):
             elif entity.entity_type == "xerxes":
                 if entity.Collides(self.sword_hitbox) and self.take_damage:
                     print(f"[DEBUG] Leonidas hit Xerxes at ({entity.x}, {entity.y}).")
-                    entity.Damage(self.player.attack)
+                    entity.Damage(self.player.attack_boss)
                     self.take_damage = False
                     self.hit_sound.play()
                     print(f"[DEBUG] Xerxes health: {entity.health}")

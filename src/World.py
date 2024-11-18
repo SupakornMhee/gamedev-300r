@@ -38,7 +38,7 @@ class World:
         """Define level-specific configurations."""
         level_config = [
             {"monsters": 5, "duration": 15, "boss": "loog_nong"},
-            {"monsters": 10, "duration": 20, "boss": None},
+            {"monsters": 10, "duration": 20, "boss": "loog_nong"},
             {"monsters": 15, "duration": 25, "boss": None},
             {"monsters": 20, "duration": 30, "boss": None},
             {"monsters": 25, "duration": 40, "boss": "loog_nong"},
@@ -71,6 +71,13 @@ class World:
     def create_entity(self, conf):
         """Create and initialize an entity with a state machine."""
         new_entity = EntityBase(conf)
+        if conf.entity_type == "GeeGee":
+            wave_multiplier = 1 + (0.02 * (self.wave_number - 1))  # เพิ่ม 2% ต่อ wave
+            new_entity.health = int(conf.health * wave_multiplier)
+            new_entity.attack = conf.attack * wave_multiplier
+            print(f"[DEBUG] Wave {self.wave_number} GeeGee stats:")
+            print(f"[DEBUG] - Base health: {conf.health} -> Scaled: {new_entity.health}")
+            print(f"[DEBUG] - Base attack: {conf.attack} -> Scaled: {new_entity.attack}")
         new_entity.state_machine = StateMachine()
         new_entity.state_machine.SetScreen(pygame.display.get_surface())
         new_entity.state_machine.SetStates({

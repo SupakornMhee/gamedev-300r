@@ -22,6 +22,8 @@ class SelectItemState(BaseState) :
         self.option = 0
         self.item_option = self.getRandomItem()
         self.items = params.get("items", [0]*9)
+        self.rage_damage_taken = params.get("rage_damage_taken", 0)  # เพิ่มการรับค่า
+        self.rage_times_used = params.get("rage_times_used", 0)     # เพิ่มการรับค่า
     
     def getRandomItem(self) :
         selection = []
@@ -59,7 +61,13 @@ class SelectItemState(BaseState) :
                     #self.obtained_items[self.item_option[self.option]] += 1
                     self.items[self.item_option[self.option]] += 1
                     # go to load next state
-                    g_state_manager.Change('load', {'wave_number': self.wave_number + 1, "items":self.items})
+                    params = {
+            'wave_number': self.wave_number+1,
+            "items": self.items,
+            "rage_damage_taken": self.rage_damage_taken,  # ส่งต่อค่า
+            "rage_times_used": self.rage_times_used      # ส่งต่อค่า
+        }
+                    g_state_manager.Change('load', params)
                     
 
     

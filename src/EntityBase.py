@@ -45,6 +45,14 @@ class EntityBase():
         
         self.cooldown = 0
         self.able_to_attack = True
+        # Add rage mechanics base attributes
+        self.rage_damage_taken = 100
+        self.rage_threshold = 100  # Initial threshold
+        self.is_rage_active = False
+        self.rage_timer = 0
+        self.rage_duration = 5  # 5 seconds
+        self.original_attack = self.attack  # Store original attack value
+        self.rage_times_used = 0
         
     def GetHitBox(self) :
         if self.direction_x == 'left':
@@ -93,12 +101,21 @@ class EntityBase():
                    self.rect.y + self.height < target.rect.y or self.rect.y > target.rect.y + target.height)
 
     def Damage(self, dmg):
+        if self.is_rage_active:
+            print(f"[DEBUG] Rage active - damage blocked")
+            return
         print(f"Leonidas takes {dmg} damage.")
+        original_health = self.health
         self.health -= dmg
         if self.health <= 0:
             self.health = 0
             self.is_dead = True
             print("Leonidas is dead.")
+        # Track damage for rage system
+        if hasattr(self, 'rage_damage_taken'):  # Only track if entity has rage system
+            damage_dealt = original_health - self.health
+            self.rage_damage_taken += damage_dealt
+            print(f"[DEBUG] Rage damage accumulated: {self.rage_damage_taken}/{self.rage_threshold}")
 
     def Restore(self) :
         if self.health != self.init_health :
@@ -129,6 +146,11 @@ class EntityBase():
 
         if self.curr_animation:
             self.curr_animation.update(dt)
+        # Update rage timer if active
+        if hasattr(self, 'is_rage_active') and self.is_rage_active:
+            self.rage_timer += dt
+            if self.rage_timer >= self.rage_duration:
+                self.deactivate_rage()
 
     def ProcessAI(self, params, dt):
         self.state_machine.ProcessAI(params, dt)

@@ -14,7 +14,7 @@ from src.StateMachine import StateMachine
 
 # from src.world.Dungeon import Dungeon
 from src.World import World
-from math import floor
+from math import ceil, floor
 
 class PlayState(BaseState):
     def __init__(self):
@@ -25,6 +25,7 @@ class PlayState(BaseState):
         self.red_flash = False  # Flag for red flash effect
         self.flash_timer = 0  # Timer for toggling flash effect
         self.flash_interval = 0.5  # Interval for flashing (in seconds)
+        
     def Enter(self, params):
         
         # try:
@@ -44,10 +45,21 @@ class PlayState(BaseState):
         print("Entering Playstate...")
         self.reset_music()
         self.play_random_wave_music()
+       
         # self.level = params['level']
         # ทำหน้าเข้าเกม
         entity_conf = ENTITY_DEFS["player"]
         self.player = Player(entity_conf,self.items)
+         # Set up rage stats
+        # รับค่า damage_taken และ times_used
+        self.player.rage_damage_taken = params.get("rage_damage_taken", 0)
+        self.player.rage_times_used = params.get("rage_times_used", 0)
+    # คำนวณ threshold ตามจำนวนครั้งที่ใช้
+        self.player.rage_threshold = 100 * (2 ** self.player.rage_times_used)
+
+    # ย้ายการกำหนดค่า rage มาไว้หลังจากสร้าง player แล้ว
+        
+        self.player.is_rage_active = False
         self.world = World(self.wave_number,self.player)
         self.player.world = self.world
         self.player.state_machine = StateMachine()
@@ -95,10 +107,28 @@ class PlayState(BaseState):
             pygame.mixer.music.set_volume(0.5)
             pygame.mixer.music.play(-1)
             self.is_boss_music_playing = False
+    def reset_rage(self):
+    
+        self.rage_damage_taken = 0
+        self.rage_threshold = 100  # กลับไปที่ค่าเริ่มต้น
+        self.is_rage_active = False
+        self.rage_timer = 0
+        self.attack = self.original_attack  # เผื่อกรณีที่ยังอยู่ใน rage mode
+        self.invulnerable = False
+    
+    # หยุดเสียง rage ถ้ายังเล่นอยู่
+        if hasattr(self, 'rage_sound_channel') and self.rage_sound_channel:
+            self.rage_sound_channel.stop()
+    
+        print("[DEBUG] Rage system reset")
+        print(f"[DEBUG] - Damage taken: {self.rage_damage_taken}")
+        print(f"[DEBUG] - Threshold: {self.rage_threshold}")
+        print(f"[DEBUG] - Attack: {self.attack}")
         
     def getWinCondition(self):
     # Check if there are no enemies left in the world
         if self.world.level_data["monsters"] - self.world.monsters_spawned + self.world.countEnemies()  == 0:
+            
             return True
         return False
     
@@ -184,7 +214,13 @@ class PlayState(BaseState):
             if self.wave_number == 10:
                 g_state_manager.Change("lastvictory")
             else :
-                params = {"wave_number": self.wave_number, "victory":True, "items":self.items}
+                params = {
+             "wave_number": self.wave_number ,
+            "victory": True,
+            "items": self.items,
+            "rage_damage_taken": self.player.rage_damage_taken,  # แก้เป็น self.player
+            "rage_times_used": self.player.rage_times_used      # แก้เป็น self.player
+        }
                 g_state_manager.Change("result",params)
         if self.getLoseCondition() :
             params = {"wave_number": self.wave_number, "victory":False, "items":self.items}
@@ -324,6 +360,27 @@ class PlayState(BaseState):
         if self.paused: 
             self.renderPausePage(screen)
             return None
+        # Render rage visual effects
+        if self.player.is_rage_active:
+            # Pulsing red overlay
+            red_overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
+            alpha = int(abs(math.sin(self.player.rage_effect_time * 5)) * 50)
+            red_overlay.fill((255, 0, 0, alpha))
+            screen.blit(red_overlay, (0, 0))
+            
+            # Rage timer display
+            remaining_time = ceil(self.player.rage_duration - self.player.rage_timer)
+            rage_text = f"RAGE ACTIVE: {remaining_time}s"
+        else:
+            # Rage progress display
+            rage_text = f"Rage: {floor(self.player.rage_damage_taken)}/{self.player.rage_threshold}"
+            
+        # Render rage status text
+        rage_font = pygame.font.Font('./fonts/CooperMdBT-Regular.ttf', 20)
+        rage_display = rage_font.render(rage_text, True, (255, 0, 0))
+        rage_rect = rage_display.get_rect(topright=(WIDTH - 20, 50))
+        pygame.draw.rect(screen, (255, 255, 255), rage_rect.inflate(10, 5))
+        screen.blit(rage_display, rage_rect)
         
         
         # World Render
@@ -381,6 +438,15 @@ class PlayState(BaseState):
             
 
     def Exit(self):
-        if self.music_loaded:
-            pygame.mixer.music.fadeout(500)  # Fade out over 0.5 seconds
-            self.music_loaded = False
+        
+        pygame.mixer.music.fadeout(500)  # Fade out over 0.5 seconds
+        self.music_loaded = False
+         # Reset music flags
+        self.music_loaded = False
+        self.current_music = None
+        self.previous_wave_music = None
+        self.is_boss_music_playing = False
+    
+    # Stop player rage sound if active
+        if hasattr(self.player, 'rage_sound_channel') and self.player.rage_sound_channel:
+            self.player.rage_sound_channel.stop()
