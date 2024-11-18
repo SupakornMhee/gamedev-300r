@@ -31,20 +31,22 @@ class World:
         self.boss_defeated = False  # Track if the boss has been defeated
         # Spawn a portion of enemies immediately
         self.initial_spawn()
+        self.flash_timer = 0  # Timer for screen flash effect
+        self.is_screen_flashing = False  # Flag to indicate screen flashing
 
     def get_level_data(self):
         """Define level-specific configurations."""
         level_config = [
-            {"monsters": 2, "duration": 15, "boss": "xerxes"},
-            {"monsters": 10, "duration": 20, "boss": "loog_nong"},
+            {"monsters": 5, "duration": 15, "boss": "loog_nong"},
+            {"monsters": 10, "duration": 20, "boss": None},
             {"monsters": 15, "duration": 25, "boss": None},
-            {"monsters": 25, "duration": 30, "boss": None},
-            {"monsters": 25, "duration": 32, "boss": "loog_nong"},
-            {"monsters": 35, "duration": 35, "boss": None},
-            {"monsters": 40, "duration": 40, "boss": None},
-            {"monsters": 45, "duration": 50, "boss": None},
-            {"monsters": 50, "duration": 60, "boss": None},
-            {"monsters": 40, "duration": 60, "boss": "xerxes"},
+            {"monsters": 20, "duration": 30, "boss": None},
+            {"monsters": 25, "duration": 40, "boss": "loog_nong"},
+            {"monsters": 30, "duration": 50, "boss": None},
+            {"monsters": 35, "duration": 50, "boss": None},
+            {"monsters": 40, "duration": 55, "boss": None},
+            {"monsters": 45, "duration": 60, "boss": None},
+            {"monsters": 45, "duration": 80, "boss": "xerxes"},
         ]
         adjusted_wave_number = self.wave_number - 1
         if adjusted_wave_number < 0 or adjusted_wave_number >= len(level_config):
@@ -115,6 +117,8 @@ class World:
             boss_entity = self.create_entity(boss_conf)
             self.entities.append(boss_entity)
             self.boss_spawned = True  # Mark boss as spawned
+            self.is_screen_flashing = True
+            self.flash_timer = 2  # Flash the screen for 2 seconds
             print(f"[DEBUG] Spawned Boss: {self.level_data['boss']} at position ({boss_entity.x}, {boss_entity.y})")
 
     def countEnemies(self):
@@ -131,13 +135,24 @@ class World:
         self.GenerateEntities(dt)
 
         for entity in self.entities[:]:
+            print(f"[DEBUG] {entity.entity_type} is dead.")
+            
+            
             if entity.is_dead:
-                if entity.entity_type == self.level_data['boss']:
+                if self.level_data['boss'] and entity.entity_type == self.level_data['boss']:
+                    print("-----------------------------------------------------")
                     print(f"[DEBUG] {entity.entity_type} has been defeated!")
                     self.boss_defeated = True  # Mark the boss as defeated
+                else:
+                    print(f"[DEBUG] {entity.entity_type} is not the boss.")
+                    
                 self.entities.remove(entity)
             else:
                 entity.ProcessAI({"player": (self.player.x, self.player.y), "player_entity": self.player}, dt)
+        if self.is_screen_flashing:
+            self.flash_timer -= dt
+            if self.flash_timer <= 0:
+                self.is_screen_flashing = False
                 
 
     def render(self, screen: pygame.Surface):
@@ -146,3 +161,10 @@ class World:
         self.player.render()
         for entity in self.entities:
             entity.render()
+        # Apply flashing effect
+        if self.is_screen_flashing:
+            alpha = int(abs(self.flash_timer % 0.5 - 0.25) * 1020)  # Fade effect
+            flash_surface = pygame.Surface(screen.get_size())
+            flash_surface.fill((0, 0, 0))  # White flash
+            flash_surface.set_alpha(alpha)
+            screen.blit(flash_surface, (0, 0))

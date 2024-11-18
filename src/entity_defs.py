@@ -24,7 +24,7 @@ class EntityConf:
 ENTITY_DEFS = {
     'player': EntityConf(animation=gPlayer_animation_list, walk_speed=90,
                          x=WIDTH/2-24, y=HEIGHT/2 -33, width=350*0.3, height=373*0.3,
-                          health=1000, attack=5, offset_x=0, offset_y=0),
+                          health=100, attack=5, offset_x=0, offset_y=0),
     
     'geegee':EntityConf(animation=gGeeGee_animation_list, walk_speed=40, 
                         health=15, attack=5,
@@ -34,5 +34,5 @@ ENTITY_DEFS = {
                         health=120, attack=20, offset_x=0, offset_y=0,entity_type="xerxes"),
     
     'loog_nong':EntityConf(animation=gLoog_nong_animation_list, width=229*0.5, height=400*0.5,
-                        health = 70, attack = 10, offset_x=0, offset_y=0,entity_type="loog_nong")
+                        health = 80, attack = 10, offset_x=0, offset_y=0,entity_type="loog_nong")
 }

@@ -10,6 +10,7 @@ from src.player import Player
 class PlayerAttackState(BaseState):
     def __init__(self, player):
         self.player: Player = player
+        self.hit_sound = pygame.mixer.Sound("./sounds/sword.mp3")
         
     def Enter(self, params=None):
         self.player.offset_x = 0
@@ -52,6 +53,7 @@ class PlayerAttackState(BaseState):
                     entity.Damage(self.player.attack)
                     self.take_damage = False
                     print(f"[DEBUG] GeeGee health: {entity.health}")
+                    self.hit_sound.play()
 
                     if entity.health <= 0:
                         print(f"[DEBUG] GeeGee at ({entity.x}, {entity.y}) is dead.")
@@ -62,6 +64,7 @@ class PlayerAttackState(BaseState):
                     entity.Damage(self.player.attack)
                     self.take_damage = False
                     print(f"[DEBUG] Loog_Nong health: {entity.health}")
+                    self.hit_sound.play()
                     if entity.health <= 0:
                         print(f"[DEBUG] Loog_Nong at ({entity.x}, {entity.y}) is dead.")
                         self.player.world.entities.remove(entity)
@@ -72,6 +75,7 @@ class PlayerAttackState(BaseState):
                     print(f"[DEBUG] Leonidas hit Xerxes at ({entity.x}, {entity.y}).")
                     entity.Damage(self.player.attack)
                     self.take_damage = False
+                    self.hit_sound.play()
                     print(f"[DEBUG] Xerxes health: {entity.health}")
                     if entity.health <= 0:
                         print(f"[DEBUG] Xerxes at ({entity.x}, {entity.y}) is dead.")

@@ -3,7 +3,7 @@ import pygame, sys
 from src.recourses import *
 from src.constants import *
 from src.entity_defs import *
-
+import random
 from src.entity_defs import EntityConf
 from src.player import Player
 
@@ -19,7 +19,12 @@ from math import floor
 class PlayState(BaseState):
     def __init__(self):
         self.music_loaded = False
-
+        self.current_music = None
+        self.is_boss_music_playing = False
+        self.previous_wave_music = None
+        self.red_flash = False  # Flag for red flash effect
+        self.flash_timer = 0  # Timer for toggling flash effect
+        self.flash_interval = 0.5  # Interval for flashing (in seconds)
     def Enter(self, params):
         
         # try:
@@ -37,6 +42,8 @@ class PlayState(BaseState):
         self.world = World(self.wave_number, None)  
         self.items = params.get("items", [0]*9)
         print("Entering Playstate...")
+        self.reset_music()
+        self.play_random_wave_music()
         # self.level = params['level']
         # ทำหน้าเข้าเกม
         entity_conf = ENTITY_DEFS["player"]
@@ -54,6 +61,40 @@ class PlayState(BaseState):
         )
         self.player.ChangeState("walk")
         print("Health of player",self.player.health)
+    def play_random_wave_music(self):
+        """Play a random track for the wave."""
+        tracks = [
+            "./sounds/bangrajan.mp3",
+            "./sounds/apt.mp3",
+            "./sounds/TchuTchaTcha.mp3",
+            "./sounds/Theve.mp3"
+        ]
+        self.current_music = random.choice(tracks)
+        pygame.mixer.music.load(self.current_music)
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)
+        self.is_boss_music_playing = False  # Loop indefinitely
+    def play_boss_music(self):
+        """Switch to boss music."""
+        if not self.is_boss_music_playing:  # Only play if not already playing
+            self.previous_wave_music = self.current_music  # Save current wave music
+            pygame.mixer.music.load("./sounds/Zebra.mp3")
+            pygame.mixer.music.set_volume(0.7)
+            pygame.mixer.music.play(-1)
+            self.is_boss_music_playing = True
+    def reset_music(self):
+        """Stop any currently playing music."""
+        pygame.mixer.music.stop()
+        self.current_music = None
+        self.previous_wave_music = None
+        self.is_boss_music_playing = False  # Reset boss music flag
+    def revert_to_wave_music(self):
+        """Revert to the previous wave music."""
+        if self.previous_wave_music:
+            pygame.mixer.music.load(self.previous_wave_music)
+            pygame.mixer.music.set_volume(0.5)
+            pygame.mixer.music.play(-1)
+            self.is_boss_music_playing = False
         
     def getWinCondition(self):
     # Check if there are no enemies left in the world
@@ -68,6 +109,24 @@ class PlayState(BaseState):
         return False
 
     def update(self, dt, events):
+        print("Self boss defeat", self.world.boss_defeated)
+        if self.player.health < 20 :
+            self.flash_timer += dt
+            if self.flash_timer >= self.flash_interval:
+                self.red_flash = not self.red_flash  # Toggle flash state
+                self.flash_timer = 0  # Reset timer
+        else:
+            self.red_flash = False  # Stop flashing if health is above 20 or paused
+
+        
+            
+        if self.world.boss_spawned and not self.is_boss_music_playing:
+            print("Boss spawned! Switching to boss music.")
+            self.reset_music()
+            self.play_boss_music()
+        elif self.world.boss_defeated :
+            print("Boss defeated! Reverting to wave music.")
+            self.revert_to_wave_music()
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -118,6 +177,7 @@ class PlayState(BaseState):
                             # sys.exit()
                     elif self.show_instructions and event.key == pygame.K_BACKSPACE:
                         self.show_instructions = False  # Close instructions page
+        
             return None
 
         if self.getWinCondition() :
@@ -294,6 +354,11 @@ class PlayState(BaseState):
         health_rect = health_text.get_rect(topright=(WIDTH - 20, 20))
         pygame.draw.rect(screen, (255, 255, 255), health_rect.inflate(10, 5))  # White background for visibility
         screen.blit(health_text, health_rect)
+        # Apply red flash effect
+        if self.red_flash:
+            red_overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
+            red_overlay.fill((255, 0, 0, 100))  # Semi-transparent red
+            screen.blit(red_overlay, (0, 0))
         '''
         health_left = self.player.health
 
