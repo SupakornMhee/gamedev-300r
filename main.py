@@ -1,8 +1,3 @@
-'''
-code นี้เป็นการทดสอบ play state เท่านั้น 
-เปิดเกมมา จะไปโผล่ที่ game state เลย
-'''
-
 import pygame, math, random, sys, os
 from src.constants import *
 
@@ -53,7 +48,7 @@ class GameMain:
         
         
         while True:
-            pygame.display.set_caption("Zelda game running with {:d} FPS".format(int(clock.get_fps())))
+            pygame.display.set_caption("300:Rewritten Presented by Group Lionel")
             dt = clock.tick(self.max_frame_rate) / 1000.0
 
             events = pygame.event.get()
