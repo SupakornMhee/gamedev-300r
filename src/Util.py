@@ -90,14 +90,25 @@ class SpriteManager:
     def __init__(self):
         self.spriteCollection = self.loadSprites(
             [
-                # "./sprite/CharacterAnimation.json",
-                # "./sprite/SkeletonAnimation.json",
-                # "./sprite/Heart.json",
-                # #"./sprite/CharacterIdle.json",
-                # "./sprite/CharacterAttack.json",
+                "./sprite/geegee_attack_left.json",
+                "./sprite/geegee_attack_right.json",
+                "./sprite/geegee_walk_left.json",
+                "./sprite/geegee_walk_right.json",
+                "./sprite/leonidas_attack_left.json",
+                "./sprite/leonidas_attack_right.json",
+                "./sprite/leonidas_walk_left.json",
+                "./sprite/leonidas_walk_right.json",
+                "./sprite/loog_nong_attack.json",
+                "./sprite/loog_nong_walk.json",
+                "./sprite/xerxes_attack.json",
+                "./sprite/xerxes_walk.json"
             ]
         )
 
+        # Debugging
+        print("Loaded Sprites:")
+        for key in self.spriteCollection.keys():
+            print(f"  {key}")
     def loadSprites(self, urlList, shrink_scale=1):
         resDict = {}
         for url in urlList:
@@ -197,3 +208,5 @@ class SpriteSheet(object):
         return pygame.transform.scale(
             image, (xTileSize * scalingfactor, yTileSize * scalingfactor)
         )
+        
+

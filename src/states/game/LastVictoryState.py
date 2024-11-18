@@ -7,6 +7,9 @@ from src.recourses import *
 
 class LastVictoryState(BaseState):
     def __init__(self):
+        pass
+    
+    def AssignVariable(self) :
         # Initialize mixer and load background music
         self.background_music = pygame.mixer.Sound('./sounds/LastVioctoryOK.mp3')
         self.background_music.set_volume(0.5)
@@ -21,15 +24,19 @@ class LastVictoryState(BaseState):
             "300: REWRITTEN",
             "",
             "Director",
+            "6422781276",
             "Danuvasin Pangsa-art",
             "",
             "Producer",
+            "6422781235",
             "Thanapoom Noywijith",
             "",
             "Senior Developer",
+            "6422780146",
             "Supakorn Nilsuwan",
             "",
             "Art Director",
+            "6422782738",
             "Put Thitisawat",
         ]
 
@@ -48,8 +55,9 @@ class LastVictoryState(BaseState):
         # Fade and transition timing
         self.fade_duration = 2000
         self.victory_display_duration = 5000
-
+        
     def Enter(self, params=None):
+        self.AssignVariable()
         # Start playing background music
         self.background_music.play(loops=-1)
         # Use initial_delay from params if provided
@@ -65,6 +73,8 @@ class LastVictoryState(BaseState):
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+                if event.key == pygame.K_RETURN:
+                    g_state_manager.Change("start")
 
         current_time = pygame.time.get_ticks()
         time_elapsed = current_time - self.start_time

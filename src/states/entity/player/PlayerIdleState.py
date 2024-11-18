@@ -15,7 +15,7 @@ class PlayerIdleState(EntityIdleState):
 
     def update(self, dt, events):
         pressedKeys = pygame.key.get_pressed()
-        if pressedKeys[pygame.K_LEFT] or pressedKeys [pygame.K_RIGHT] or pressedKeys [pygame.K_UP] or pressedKeys [pygame.K_DOWN]:
+        if pressedKeys[pygame.K_a] or pressedKeys [pygame.K_d] or pressedKeys [pygame.K_w] or pressedKeys [pygame.K_s]:
             self.entity.ChangeState('walk')
 
         for event in events:

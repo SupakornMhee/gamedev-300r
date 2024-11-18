@@ -1,0 +1,30 @@
+{
+    "spriteSheetURL": "./graphics/geegee_walk_right.png",
+    "type":"animation",
+    "size":[184,228],
+    "sprites":[
+        {
+            "name":"geegee_walk_right",
+            "images":[
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":0.4
+                },
+                {
+                    "x":184,
+                    "y":0,
+                    "scale":0.4
+                }
+            ],
+            "idle_image":
+			{
+				"x":0,
+				"y":0,
+				"scale":0.4
+		     },
+            "interval_time":0.15,
+            "colorKey": null
+        }
+]
+}

@@ -1,3 +1,8 @@
+'''
+code นี้เป็นการทดสอบ play state เท่านั้น 
+เปิดเกมมา จะไปโผล่ที่ game state เลย
+'''
+
 import pygame, math, random, sys, os
 from src.constants import *
 
@@ -22,11 +27,15 @@ class GameMain:
         
         states = {
             # 'start': StartState(),
-            # 'play': PlayState(),
+            
             # 'game_over': GameOverState(),
             'start' : StartState(),
             'story_1' : StoryState(),
-            'lastvictory' : LastVictoryState()
+            'play': PlayState(),
+            'lastvictory' : LastVictoryState(),
+            'load' : LoadingState(),
+            'select': SelectItemState(),
+            'result': ResultState()
         }
 
         g_state_manager.SetStates(states)
@@ -37,8 +46,12 @@ class GameMain:
         # gSounds['music'].play(-1)
         clock = pygame.time.Clock()
 
-        g_state_manager.Change("start")
-
+        
+        init_state = "start"
+        params = {"wave_number":1}
+        g_state_manager.Change(init_state,params)
+        
+        
         while True:
             pygame.display.set_caption("Zelda game running with {:d} FPS".format(int(clock.get_fps())))
             dt = clock.tick(self.max_frame_rate) / 1000.0
@@ -50,7 +63,6 @@ class GameMain:
 
             self.screen.fill((0, 0, 0))
             g_state_manager.render()
-
             pygame.display.update()
 
 

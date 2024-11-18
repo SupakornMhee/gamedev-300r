@@ -1,0 +1,26 @@
+{
+    "spriteSheetURL": "./graphics/xerxes.png",
+    "type":"animation",
+    "size":[226,300],
+    "sprites":[
+        {
+            "name":"xerxes_walk",
+            "images":[
+                {
+                    "x":0,
+                    "y":900,
+                    "scale":0.5
+                }
+            ],
+	       "idle_image":
+			{
+				"x":0,
+				"y":900,
+				"scale":0.5
+		     },
+            "interval_time":0.15,
+            "colorKey": null
+        }
+]
+}
+

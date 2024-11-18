@@ -1,0 +1,32 @@
+{
+    "spriteSheetURL": "./graphics/loog_nong.png",
+    "type":"animation",
+    "size":[229,400],
+    "sprites":[
+        {
+            "name":"loog_nong_walk",
+            "images":[
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":0.3
+                },
+                {
+                    "x":229,
+                    "y":0,
+                    "scale":0.3
+                }
+
+            ],
+	       "idle_image":
+			{
+				"x":0,
+				"y":0,
+				"scale":0.3
+		     },
+            "interval_time":0.15,
+            "colorKey": null
+        }
+]
+}
+

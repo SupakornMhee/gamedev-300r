@@ -1,0 +1,32 @@
+{
+    "spriteSheetURL": "./graphics/leonidas_walk_right.png",
+    "type":"animation",
+    "size":[350,373],
+    "sprites":[
+        {
+            "name":"leonidas_walk_right",
+            "images":[
+                {
+                    "x":350,
+                    "y":0,
+                    "scale":0.3
+                },
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":0.3
+                }
+
+            ],
+	       "idle_image":
+			{
+				"x":350,
+				"y":0,
+				"scale":0.3
+		     },
+            "interval_time":0.15,
+            "colorKey": null
+        }
+]
+}
+

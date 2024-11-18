@@ -1,0 +1,65 @@
+{
+    "spriteSheetURL": "./graphics/loog_nong.png",
+    "type":"animation",
+    "size":[290,400],
+    "sprites":[
+        {
+            "name":"loog_nong_attack_right",
+            "images":[
+                {
+                    "x":0,
+                    "y":400,
+                    "scale":0.3
+                },
+                {
+                    "x":290,
+                    "y":400,
+                    "scale":0.3
+                },
+                {
+                    "x":580,
+                    "y":400,
+                    "scale":0.3
+                }
+
+            ],
+            "idle_image":
+            {
+                "x":0,
+                "y":400,
+                "scale":0.3
+            },
+            "interval_time":0.15,
+            "colorKey": null
+        },
+        {
+            "name":"loog_nong_attack_left",
+            "images":[
+                {
+                    "x":580,
+                    "y":800,
+                    "scale":0.3
+                },
+                {
+                    "x":290,
+                    "y":800,
+                    "scale":0.3
+                },
+                {
+                    "x":0,
+                    "y":800,
+                    "scale":0.3
+                }
+
+            ],
+            "idle_image":
+            {
+                "x":590,
+                "y":800,
+                "scale":0.3
+            },
+            "interval_time":0.15,
+            "colorKey": null
+        }
+]
+}

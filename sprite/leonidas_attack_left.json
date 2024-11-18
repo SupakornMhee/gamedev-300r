@@ -1,0 +1,37 @@
+{
+    "spriteSheetURL": "./graphics/leonidas_attack_left.png",
+    "type":"animation",
+    "size":[350,373],
+    "sprites":[
+        {
+            "name":"leonidas_attack_left",
+            "images":[
+                {
+                    "x":0,
+                    "y":0,
+                    "scale":0.3
+                },
+                {
+                    "x":700,
+                    "y":0,
+                    "scale":0.3
+                },
+                {
+                    "x":350,
+                    "y":0,
+                    "scale":0.3
+                }
+
+            ],
+	       "idle_image":
+			{
+				"x":0,
+				"y":0,
+				"scale":0.3
+		     },
+            "interval_time":0.15,
+            "colorKey": null
+        }
+]
+}
+
