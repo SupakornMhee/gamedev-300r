@@ -42,7 +42,8 @@ class StoryState(BaseState):
             "The Tome of Victory",
             "WASD : Move Leonidas",
             "TAB : Inventory",
-            "ESC : Pause"
+            "P : Pause",
+            "R : Rage Mode"
         ]
         
         # Font and background setup

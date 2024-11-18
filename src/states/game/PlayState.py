@@ -324,7 +324,8 @@ class PlayState(BaseState):
             "The Tome of Victory",
             "WASD : Move Leonidas",
             "TAB : Inventory",
-            "ESC : Pause"
+            "ESC : Pause",
+            "R : Rage Mode"
         ]
         
         # Render instructions with dramatic spacing and style
